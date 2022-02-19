@@ -18,7 +18,6 @@ import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
 import ModalScreenActivities from "../screens/ModalScreenActivities";
-import ModalEvent from "../screens/ModalEvent";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import TabThreeScreen from "../screens/TabThreeScreen";
 import Activities from "../screens/Activities";
@@ -79,7 +78,10 @@ function StackNavigator() {
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
       <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="ModalEvent" component={ModalEvent} />
+        <Stack.Screen
+          name="ModalEvent"
+          component={ModalEvent}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -96,20 +98,20 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Bitacoras"
+      initialRouteName="TabThree"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}
     >
       <BottomTab.Screen
-        name="Bitacoras"
-        component={Bitacoras}
-        options={({ navigation }: RootTabScreenProps<"Bitacoras">) => ({
+        name="TabThree"
+        component={TabThreeScreen}
+        options={({ navigation }: RootTabScreenProps<"TabThree">) => ({
           title: "Bitacoras",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate("ModalEvent")}
+              onPress={() => navigation.navigate("ModalActivities")}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}

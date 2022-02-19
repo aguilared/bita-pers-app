@@ -1,18 +1,22 @@
-import { StyleSheet, FlatList } from "react-native";
+import { StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import { Subheading, Surface, Divider, List } from "react-native-paper";
 
 import { Text, View } from "../components/Themed";
 import HTMLView from "react-native-htmlview";
-
 import axios from "axios";
+
 import dayjs from "dayjs";
+import React, { useContext } from "react";
+import { GlobalContext } from "../context/GlobalState";
+import { useNavigation } from "@react-navigation/native";
 import useSWR from "swr";
 
 const convertDate = (date: string) => {
   const d = dayjs(date).format("DD-MM-YYYY HH:MM");
   return d;
 };
-export default function TabThreeScreen({ navigation }) {
+export default function Bitacoras() {
+  const { bitacoras1, loading } = useContext(GlobalContext);
   const operatorEndpoint = "http://192.168.0.106:3000/api/bitacora/events";
   const getData = async () => {
     const response = await axios(operatorEndpoint);
@@ -20,8 +24,14 @@ export default function TabThreeScreen({ navigation }) {
   };
   const { data, error } = useSWR("operator_key", getData);
 
-  const date = new Date();
-  const titulo = "Eventos al: " + convertDate(date);
+  const dates: any = new Date();
+  const titulo = "Eventos al: " + convertDate(dates);
+  const navigation = useNavigation();
+  //console.log("Bitacoras", bitacoras1);
+  console.log("Bitacoras Data", data);
+  if (loading) {
+    return <ActivityIndicator size="large" color="#e91e63" />;
+  }
 
   return (
     <Surface style={styles.container}>
@@ -33,7 +43,7 @@ export default function TabThreeScreen({ navigation }) {
           marginTop: 1,
           marginLeft: 1,
         }}
-        data={data}
+        data={bitacoras1}
         renderItem={({ item }) => (
           <List.Section
             style={{
@@ -46,17 +56,23 @@ export default function TabThreeScreen({ navigation }) {
             <Text
               style={styles.title3}
               onPress={() =>
-                navigation.navigate("ModalActivities", {
+                navigation.navigate("ModalEvent", {
                   id: item.id,
+                  bitacora_id: item.bitacora_id,
                   event_date: item.event_date,
+                  tipo_event_id: item.tipo_event_id,
+                  events_id: item.events_id,
                   event: item.event.description,
+                  tipoevent: item.tipoEvent.description,
                   description: item.description,
                 })
               }
-            >{`Evento: ${item.event.description} ID:${item.id}`}</Text>
-            <Text style={styles.title1}>{`${convertDate(
-              item.event_date
-            )}`}</Text>
+            >
+              Id: {item.id} Fecha: {`${convertDate(item.event_date)}`}
+            </Text>
+            <Text
+              style={styles.title1}
+            >{`Evento: ${item.event.description}`}</Text>
             <HTMLView value={item.description} stylesheet={styles} />
 
             <Divider style={{ backgroundColor: "gray" }} />
@@ -109,7 +125,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
     paddingVertical: 5,
     fontSize: 17,
-    color: "orange",
+    color: "blue",
   },
   separator: {
     marginVertical: 30,

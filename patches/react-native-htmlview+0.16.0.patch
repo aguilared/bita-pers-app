@@ -1,0 +1,32 @@
+diff --git a/node_modules/react-native-htmlview/HTMLView.js b/node_modules/react-native-htmlview/HTMLView.js
+index 43f8b7e..e9fa555 100644
+--- a/node_modules/react-native-htmlview/HTMLView.js
++++ b/node_modules/react-native-htmlview/HTMLView.js
+@@ -1,7 +1,7 @@
+ import React, {PureComponent} from 'react';
+ import PropTypes from 'prop-types';
+ import htmlToElement from './htmlToElement';
+-import {Linking, Platform, StyleSheet, View, ViewPropTypes} from 'react-native';
++import {Linking, Platform, StyleSheet, View} from 'react-native';
+ 
+ const boldStyle = {fontWeight: 'bold'};
+ const italicStyle = {fontStyle: 'italic'};
+@@ -146,7 +146,6 @@ HtmlView.propTypes = {
+   renderNode: PropTypes.func,
+   RootComponent: PropTypes.func,
+   rootComponentProps: PropTypes.object,
+-  style: ViewPropTypes.style,
+   stylesheet: PropTypes.object,
+   TextComponent: PropTypes.func,
+   textComponentProps: PropTypes.object,
+@@ -161,4 +160,10 @@ HtmlView.defaultProps = {
+   RootComponent: element => <View {...element} />, // eslint-disable-line react/display-name
+ };
+ 
++ 
++const ViewPropTypes = typeof document !== 'undefined' || Platform.OS === 'web'
++  ? PropTypes.shape({style: PropTypes.object})
++  : require('react-native').ViewPropTypes || View.propTypes;
++
++
+ export default HtmlView;

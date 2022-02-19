@@ -23,7 +23,7 @@ const linking: LinkingOptions<RootStackParamList> = {
         },
       },
       Modal: "modal",
-      ModalActivities: "modalActivities",
+      ModalEvent: "modalEvent",
       NotFound: "*",
     },
   },
