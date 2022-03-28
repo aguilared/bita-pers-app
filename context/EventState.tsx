@@ -96,6 +96,7 @@ export const EventsProvider = ({ children }: Props): JSX.Element => {
             body: JSON.stringify(bitaEvent),
           }
         );
+
         //console.log("result editEvent", result);
         //const result1 = await axios(`${ENDPOINT}${bitacora.bitacora_id}`);
         //console.log("EventResult111", result1.data);
@@ -113,7 +114,9 @@ export const EventsProvider = ({ children }: Props): JSX.Element => {
   function removeBitaEvent(eventId: any) {
     const fetchData = async () => {
       try {
-        const result = await fetch("/api/bitacora/events/delete/" + eventId);
+        const result = await fetch(
+          "http://192.168.0.106:3000/api/bitacora/events/delete/" + eventId
+        );
         //console.log("result borrar", result);
         // @ts-ignore
         if (!result.ok) {

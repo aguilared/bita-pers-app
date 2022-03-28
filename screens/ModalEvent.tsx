@@ -20,7 +20,7 @@ import HTMLView from "react-native-htmlview";
 
 import axios from "axios";
 import dayjs from "dayjs";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { EventsContext } from "../context/EventState";
 import { GlobalContext } from "../context/GlobalState";
 
@@ -92,6 +92,10 @@ export default function ModalEvent(propss: Props) {
 
   const date = new Date();
   const titulo = "Evento Id: " + bitaEvents.id;
+  
+  useEffect(() => {
+    setVisible1(true);
+  }, [setVisible1]);
 
   const onSubmit = (data: any) => {
     const datas = {
