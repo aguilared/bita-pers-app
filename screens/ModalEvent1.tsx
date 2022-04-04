@@ -24,7 +24,6 @@ import React, { useContext, useEffect } from "react";
 import { EventsContext } from "../context/EventState";
 
 import { useNavigation } from "@react-navigation/native";
-import { QueryClient, QueryClientProvider } from "react-query";
 
 type Props = {
   id: number;
@@ -54,17 +53,6 @@ interface IFormInputs {
   numberInput: string;
 }
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      retry: true,
-      staleTime: 10000,
-    },
-  },
-});
-
 const convertDate = (date: string) => {
   const d = dayjs(date).format("DD-MM-YYYY HH:MM");
   return d;
@@ -80,6 +68,8 @@ export default function ModalEvent(propss: Props) {
   //console.log("bitaEvents", bitaEvents);
   const theme = useTheme();
   const backgroundColor = overlay(1, theme.colors.surface) as string;
+
+  const { editBitaEvent } = useContext(EventsContext);
 
   const [visible, setVisible] = React.useState(false);
   const [visible1, setVisible1] = React.useState(false);
@@ -105,35 +95,24 @@ export default function ModalEvent(propss: Props) {
     setVisible1(true);
   }, [setVisible1]);
 
-  const onSubmit = async (dataE: any) => {
-    try {
-      const dataEE = {
-        id: Number(dataE.id),
-        bitacora_id: Number(dataE.bitacora_id),
-        tipo_event_id: Number(dataE.tipo_event_id),
-        events_id: Number(dataE.events_id),
-        description: dataE.description,
-        event_date: new Date(dataE.event_date),
-      };
-      //await editBitacora(data);
-      const result = await fetch(
-        "http://192.168.0.101:3000/api/bitacora/events/admin/edit",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(dataEE),
-        }
-      );
-      console.log("result", result);
-      // refetch();
-      setVisible1(false);
-      setTimeout(() => {
-        //navigation.navigation.push('ActivitiesList');
-        navigation.navigate("Bitacoras");
-      }, 600);
-    } catch (error) {
-      console.log(error);
-    }
+  const onSubmit = (data: any) => {
+    const datas = {
+      id: Number(data.id),
+      bitacora_id: Number(data.bitacora_id),
+      tipo_event_id: Number(data.tipo_event_id),
+      events_id: Number(data.events_id),
+      description: data.description,
+      event_date: new Date(data.event_date),
+    };
+    console.log("datas", datas);
+    // setIsSubmitting(true);
+    editBitaEvent(datas);
+    setVisible1(false); //close Dialog
+    //debugger;
+    setTimeout(() => {
+      //navigation.navigation.push('ActivitiesList');
+      navigation.navigate("Bitacoras");
+    }, 600);
   };
 
   return (
@@ -146,7 +125,7 @@ export default function ModalEvent(propss: Props) {
             <Subheading style={styles.label}>
               <Button
                 dark
-                color="Green"
+                color="blue"
                 icon="file-document-edit-outline"
                 mode="contained"
                 onPress={() => {

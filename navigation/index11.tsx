@@ -17,8 +17,10 @@ import { ColorSchemeName, Pressable } from "react-native";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
+import ModalScreenActivities from "../screens/ModalScreenActivities";
 import ModalEvent from "../screens/ModalEvent";
 import NotFoundScreen from "../screens/NotFoundScreen";
+import TabThreeScreen from "../screens/TabThreeScreen";
 import Activities from "../screens/Activities";
 import Bitacoras from "../screens/Bitacoras";
 import {

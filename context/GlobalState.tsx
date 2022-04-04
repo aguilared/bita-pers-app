@@ -17,7 +17,7 @@ export const GlobalContext = createContext(INITIAL_STATE);
 export const GlobalProvider = ({ children }: Props): JSX.Element => {
   const [state, dispatch] = useReducer(AppReducer, INITIAL_STATE);
   const [loading, setLoading] = useState(false);
-  const ENDPOINT = "http://192.168.0.106:3000/api/bitacora/events";
+  const ENDPOINT = "http://192.168.0.101:3000/api/bitacora/events";
 
   useEffect(() => {
     setLoading(true);
@@ -130,7 +130,7 @@ export const GlobalProvider = ({ children }: Props): JSX.Element => {
       //console.log("bitaEvent.id", bitaEvent.id);
       try {
         const result = await fetch(
-          "http://192.168.0.106:3000/api/bitacora/events/admin/edit",
+          "http://192.168.0.101:3000/api/bitacora/events/admin/edit",
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -160,7 +160,6 @@ export const GlobalProvider = ({ children }: Props): JSX.Element => {
         editBitacoraNewEvent,
         removeBitacora,
         editBitaEvent,
-
         loading,
       }}
     >

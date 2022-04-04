@@ -13,7 +13,7 @@ const convertDate = (date: string) => {
   return d;
 };
 export default function TabThreeScreen() {
-  const operatorEndpoint = "http://192.168.0.106:3000/api/bitacora/events";
+  const operatorEndpoint = "http://192.168.0.101:3000/api/bitacora/events";
   const getData = async () => {
     const response = await axios(operatorEndpoint);
     return response.data;

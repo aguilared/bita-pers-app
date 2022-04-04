@@ -24,7 +24,7 @@ export const EventsContext = createContext(INITIAL_STATE);
 export const EventsProvider = ({ children }: Props): JSX.Element => {
   const [state, dispatch] = useReducer(AppReducerEvents, INITIAL_STATE);
   const [loading, seLoading] = useState(false);
-  const ENDPOINT = "http://192.168.0.106:3000/api/bitacora/events/admin";
+  const ENDPOINT = "http://192.168.0.101:3000/api/bitacora/events/admin";
 
   //const ENDPOINT = "http://localhost:3000/api/bitacora/events/";
   //const ENDPOINT1 = "http://localhost:3000/api/bitacora/events/events/";
@@ -89,7 +89,7 @@ export const EventsProvider = ({ children }: Props): JSX.Element => {
       //console.log("bitaEvent.id", bitaEvent.id);
       try {
         const result = await fetch(
-          "http://192.168.0.106:3000/api/bitacora/events/admin/edit",
+          "http://192.168.0.101:3000/api/bitacora/events/admin/edit",
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -115,7 +115,7 @@ export const EventsProvider = ({ children }: Props): JSX.Element => {
     const fetchData = async () => {
       try {
         const result = await fetch(
-          "http://192.168.0.106:3000/api/bitacora/events/delete/" + eventId
+          "http://192.168.0.101:3000/api/bitacora/events/delete/" + eventId
         );
         //console.log("result borrar", result);
         // @ts-ignore

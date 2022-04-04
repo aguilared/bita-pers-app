@@ -19,7 +19,16 @@ declare global {
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
-  ModalEvent: undefined;
+  ModalEvent: [
+    id: number,
+    bitacora_id: number,
+    tipo_event_id: number,
+    events_id: number,
+    event_date: string,
+    event: string,
+    tipoevent: string,
+    description: string
+  ];
   NotFound: undefined;
 };
 
@@ -30,7 +39,16 @@ export type RootTabParamList = {
   Bitacoras: undefined;
   TabThree: undefined;
   TabFour: undefined;
-  ModalEvent: undefined;
+  ModalEvent: [
+    id: number,
+    bitacora_id: number,
+    tipo_event_id: number,
+    events_id: number,
+    event_date: string,
+    event: string,
+    tipoevent: string,
+    description: string
+  ];
   NotFound: undefined;
 };
 
