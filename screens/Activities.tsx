@@ -13,7 +13,9 @@ const convertDate = (date) => {
 };
 
 export default function Activities() {
-  const operatorEndpoint = "http://192.168.0.101:1337/api/v1/activities";
+  //const operatorEndpoint = "http://192.168.0.101:1337/api/v1/activities";
+  const operatorEndpoint =
+    "https://bita-personal-api.vercel.app/api//v1/activities";
   const getData = async () => {
     const response = await axios(operatorEndpoint);
     return response.data;
