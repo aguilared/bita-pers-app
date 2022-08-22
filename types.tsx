@@ -19,6 +19,7 @@ declare global {
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
+  NotFound: undefined;
   ModalEvent: [
     id: number,
     bitacora_id: number,
@@ -29,16 +30,15 @@ export type RootStackParamList = {
     tipoevent: string,
     description: string
   ];
-  NotFound: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
 
 export type RootTabParamList = {
+  TabOne: undefined;
+  TabTwo: undefined;
   Bitacoras: undefined;
-  TabThree: undefined;
-  TabFour: undefined;
   ModalEvent: [
     id: number,
     bitacora_id: number,
@@ -49,7 +49,6 @@ export type RootTabParamList = {
     tipoevent: string,
     description: string
   ];
-  NotFound: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

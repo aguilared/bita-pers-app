@@ -20,17 +20,21 @@ import {
 import { Text, View } from "../components/Themed";
 import HTMLView from "react-native-htmlview";
 import axios from "axios";
-
 import dayjs from "dayjs";
 import React, { useState, useRef, useCallback } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { onlineManager, focusManager, useQuery } from "react-query";
+import {
+  onlineManager,
+  focusManager,
+  useQuery,
+  QueryClient,
+  QueryClientProvider,
+} from "react-query";
 import NetInfo from "@react-native-community/netinfo";
 import useAppState from "react-native-appstate-hook";
-
 import { useForm, Controller } from "react-hook-form";
 import overlay from "./overlay";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { BASE_URL } from "@env";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -85,12 +89,14 @@ export default function Bitacoras<T>() {
   const [tipoevent, setTipoevent] = useState("");
   const [description, setDescription] = useState("");
 
-  const ENDPOINT = "http://192.168.0.101:3000/api/bitacora/events";
+  const ENDPOINT = BASE_URL + "bitacora/events";
+  const ENDPOINTE = BASE_URL + "bitacora/events/edit/";
+
   const { status, data, error, isLoading, refetch } = useQuery(
     "bitacoras",
     async () => {
       const res = await axios.get(`${ENDPOINT}`);
-      console.log("DATA1", res);
+      // console.log("DATA1", res);
       return res.data;
     }
   );
@@ -126,24 +132,6 @@ export default function Bitacoras<T>() {
     formState: { errors },
     handleSubmit,
   } = useForm<FormData>();
-
-  const onSubmitE = async (dataE: any) => {
-    try {
-      //await editBitacora(data);
-      const result = await fetch(
-        "http://192.168.0.101:3000/api/bitacora/events/edit/",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(dataE),
-        }
-      );
-      refetch();
-      setVisible1(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   if (isLoading) {
     return <ActivityIndicator size="large" color="#e91e63" />;
@@ -210,171 +198,15 @@ export default function Bitacoras<T>() {
               <Text
                 style={styles.title1}
               >{`Tipo Evento: ${item.tipo_event_id} ${item.tipoEvent.description}`}</Text>
-              <Text style={styles.title1}>{`Evento: ${item.events_id}`}</Text>
+              <Text
+                style={styles.title1}
+              >{`Evento: ${item.events_id} ${item.event.description}`}</Text>
               <HTMLView
                 value={`Description: ${item.description}`}
                 stylesheet={styles}
               />
 
               <Divider style={{ backgroundColor: "gray" }} />
-              <View>
-                <Portal>
-                  <Dialog
-                    visible={visible1}
-                    onDismiss={hideDialog1}
-                    style={{ backgroundColor }}
-                  >
-                    <Dialog.Title style={styles.title}>
-                      Edit ID:{`${id}`}
-                      Edit BitacoraId:{`${bitacora_id}`}
-                    </Dialog.Title>
-                    <Dialog.ScrollArea
-                      style={{ maxHeight: 450, paddingHorizontal: 0 }}
-                    >
-                      <ScrollView>
-                        <View>
-                          <Text style={styles.label}>
-                            Id:
-                            <Controller
-                              name="id"
-                              control={control}
-                              render={({ field: { value } }) => (
-                                <TextInput
-                                  keyboardType="numeric"
-                                  style={styles.input}
-                                  value={String(id)}
-                                  disabled={true}
-                                />
-                              )}
-                              defaultValue={String(id)}
-                            />
-                            {errors.id && <Text>This is required.</Text>}
-                          </Text>
-
-                          <Text style={styles.label}>
-                            Bitacora Id:
-                            <Controller
-                              name="bitacora_id"
-                              control={control}
-                              render={({ field: { value } }) => (
-                                <TextInput
-                                  keyboardType="numeric"
-                                  style={styles.input}
-                                  value={String(bitacora_id)}
-                                  disabled={true}
-                                />
-                              )}
-                              defaultValue={String(bitacora_id)}
-                            />
-                            {errors.id && <Text>This is required.</Text>}
-                          </Text>
-
-                          <Text style={styles.label}>
-                            Tipos_event_id:
-                            <Controller
-                              name="tipo_event_id"
-                              control={control}
-                              render={({ field: { value } }) => (
-                                <TextInput
-                                  keyboardType="numeric"
-                                  style={styles.input}
-                                  value={String(tipo_event_id)}
-                                  disabled={true}
-                                />
-                              )}
-                              defaultValue={String(tipo_event_id)}
-                            />
-                            {errors.id && <Text>This is required.</Text>}
-                          </Text>
-
-                          <Text style={styles.label}>
-                            Events_id:
-                            <Controller
-                              name="events_id"
-                              control={control}
-                              render={({ field: { value } }) => (
-                                <TextInput
-                                  keyboardType="numeric"
-                                  style={styles.input}
-                                  value={String(events_id)}
-                                  disabled={true}
-                                />
-                              )}
-                              defaultValue={String(events_id)}
-                            />
-                            {errors.id && <Text>This is required.</Text>}
-                          </Text>
-
-                          <Text style={styles.label}>Description:</Text>
-                          <Controller
-                            name="description"
-                            control={control}
-                            rules={{ required: true }}
-                            defaultValue={String(description)}
-                            render={({
-                              field: { onChange, onBlur, value, ref },
-                            }) => (
-                              <TextInput
-                                multiline
-                                numberOfLines={4}
-                                onBlur={onBlur}
-                                value={value}
-                                onChangeText={(value) => onChange(value)}
-                                ref={ref}
-                              />
-                            )}
-                          />
-
-                          <Text style={styles.label}>
-                            Fecha:
-                            <Controller
-                              name="event_date"
-                              control={control}
-                              render={({ field: { value } }) => (
-                                <TextInput
-                                  keyboardType="numeric"
-                                  style={styles.input}
-                                  value={String(event_date)}
-                                  disabled={true}
-                                />
-                              )}
-                              defaultValue={String(event_date)}
-                            />
-                            {errors.id && <Text>This is required.</Text>}
-                          </Text>
-                        </View>
-
-                        <View style={styles.topRow}>
-                          <View>
-                            <Subheading style={styles.label}>
-                              <Button
-                                dark
-                                color="gray"
-                                icon="file-cancel-outline"
-                                mode="contained"
-                                onPress={hideDialog1}
-                              >
-                                Cancelar
-                              </Button>
-                              {"  "}
-                              <Button
-                                dark
-                                color="green"
-                                icon="content-save-edit-outline"
-                                background-color="gray"
-                                mode="contained"
-                                onPress={handleSubmit(onSubmitE)}
-                              >
-                                Modificar
-                              </Button>
-                            </Subheading>
-                          </View>
-                        </View>
-                      </ScrollView>
-                    </Dialog.ScrollArea>
-                  </Dialog>
-                </Portal>
-              </View>
             </List.Section>
           )}
           keyExtractor={(item, index) => index.toString()}

@@ -17,19 +17,18 @@ import { ColorSchemeName, Pressable } from "react-native";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
-import ModalEvent from "../screens/ModalEvent";
 import NotFoundScreen from "../screens/NotFoundScreen";
-import Activities from "../screens/Activities";
+import TabOneScreen from "../screens/TabOneScreen";
+import TabTwoScreen from "../screens/TabTwoScreen";
 import Bitacoras from "../screens/Bitacoras";
+import ModalEvent from "../screens/ModalEvent";
+
 import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { DrawerContent } from "./drawerContent";
-const Drawer = createDrawerNavigator();
 
 export default function Navigation({
   colorScheme,
@@ -53,14 +52,6 @@ export default function Navigation({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  return (
-    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
-      <Drawer.Screen name="Home" component={StackNavigator} />
-    </Drawer.Navigator>
-  );
-}
-
-function StackNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -94,20 +85,20 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Bitacoras"
+      initialRouteName="TabOne"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}
     >
       <BottomTab.Screen
-        name="Bitacoras"
-        component={Bitacoras}
-        options={({ navigation }: RootTabScreenProps<"Bitacoras">) => ({
-          title: "Bitacoras",
+        name="TabOne"
+        component={TabOneScreen}
+        options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
+          title: "Tab One",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate("ModalEvent")}
+              onPress={() => navigation.navigate("Modal")}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}
@@ -122,12 +113,19 @@ function BottomTabNavigator() {
           ),
         })}
       />
-
       <BottomTab.Screen
-        name="TabFour"
-        component={Activities}
+        name="TabTwo"
+        component={TabTwoScreen}
         options={{
-          title: "Activi",
+          title: "Tab Two",
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Bitacoras"
+        component={Bitacoras}
+        options={{
+          title: "Bitacoras",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />

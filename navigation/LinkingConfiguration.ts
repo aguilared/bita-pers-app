@@ -10,20 +10,29 @@ import * as Linking from "expo-linking";
 import { RootStackParamList } from "../types";
 
 const linking: LinkingOptions<RootStackParamList> = {
-  prefixes: [Linking.makeUrl("/")],
+  prefixes: [Linking.createURL("/")],
   config: {
     screens: {
       Root: {
         screens: {
-          TabThree: {
+          TabOne: {
             screens: {
-              TabThreeScreen: "three",
+              TabOneScreen: "one",
+            },
+          },
+          TabTwo: {
+            screens: {
+              TabTwoScreen: "two",
+            },
+          },
+          Bitacoras: {
+            screens: {
+              Bitacoras: "bitacoras",
             },
           },
         },
       },
       Modal: "modal",
-      ModalEvent: "modalEvent",
       NotFound: "*",
     },
   },

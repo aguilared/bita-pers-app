@@ -21,7 +21,6 @@ import HTMLView from "react-native-htmlview";
 import axios from "axios";
 import dayjs from "dayjs";
 import React, { useContext, useEffect } from "react";
-import { EventsContext } from "../context/EventState";
 
 import { useNavigation } from "@react-navigation/native";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -117,7 +116,7 @@ export default function ModalEvent(propss: Props) {
       };
       //await editBitacora(data);
       const result = await fetch(
-        "http://192.168.0.101:3000/api/bitacora/events/admin/edit",
+        "http://192.168.0.99:3000/api/bitacora/events/admin/edit",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -146,7 +145,7 @@ export default function ModalEvent(propss: Props) {
             <Subheading style={styles.label}>
               <Button
                 dark
-                color="Green"
+                color="green"
                 icon="file-document-edit-outline"
                 mode="contained"
                 onPress={() => {
