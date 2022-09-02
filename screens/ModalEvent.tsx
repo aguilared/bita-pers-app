@@ -190,7 +190,7 @@ export default function ModalEvent(propss: Props) {
             style={{ backgroundColor }}
           >
             <Dialog.Title style={styles.title}>
-              Edit Actividad: {bitaEvents.id}
+              Edit Actividadd: {bitaEvents.id}
             </Dialog.Title>
             <Dialog.ScrollArea style={{ maxHeight: 450, paddingHorizontal: 0 }}>
               <ScrollView>
@@ -222,7 +222,8 @@ export default function ModalEvent(propss: Props) {
                         label="BitacoraID"
                         testID="input"
                         mode="outlined"
-                        value={bitaEvents.bitacora_id}
+                        keyboardType="numeric"
+                        value={String(bitaEvents.bitacora_id)}
                       />
                     )}
                   />
@@ -239,7 +240,8 @@ export default function ModalEvent(propss: Props) {
                         label="TipoEventID"
                         testID="input"
                         mode="outlined"
-                        value={bitaEvents.tipo_event_id}
+                        keyboardType="numeric"
+                        value={String(bitaEvents.tipo_event_id)}
                       />
                     )}
                   />
@@ -256,7 +258,8 @@ export default function ModalEvent(propss: Props) {
                         label="EventsID"
                         testID="input"
                         mode="outlined"
-                        value={bitaEvents.events_id}
+                        keyboardType="numeric"
+                        value={String(bitaEvents.events_id)}
                       />
                     )}
                   />
