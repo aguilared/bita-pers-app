@@ -5,6 +5,7 @@ import {
   Surface,
   Subheading,
   Button,
+  Provider,
   Portal,
   Dialog,
   TextInput,
@@ -194,76 +195,80 @@ export default function ModalEvent(propss: Props) {
             </Dialog.Title>
             <Dialog.ScrollArea style={{ maxHeight: 450, paddingHorizontal: 0 }}>
               <ScrollView>
-                <View style={styles.inputContainerStyle}>
-                  <Controller
-                    name="id"
-                    control={control}
-                    render={({ field: { value } }) => (
-                      <TextInput
-                        label="ID"
-                        testID="input"
-                        mode="outlined"
-                        keyboardType="numeric"
-                        value={String(bitaEvents.id)}
-                        disabled={true}
-                      />
-                    )}
-                  />
-                  {errors.id && <Text>This is required.</Text>}
-                </View>
+                <View>
+                  <Text style={styles.label}>
+                    Id:
+                    <Controller
+                      name="id"
+                      control={control}
+                      render={({ field: { value } }) => (
+                        <TextInput
+                          keyboardType="numeric"
+                          style={styles.input}
+                          value={String(bitaEvents.id)}
+                          disabled={true}
+                        />
+                      )}
+                      defaultValue={String(bitaEvents.id)}
+                    />
+                    {errors.id && <Text>This is required.</Text>}
+                  </Text>
 
-                <View style={styles.inputContainerStyle}>
-                  <Controller
-                    name="bitacora_id"
-                    control={control}
-                    defaultValue={bitaEvents.bitacora_id}
-                    render={({ field: { value } }) => (
-                      <TextInput
-                        label="BitacoraID"
-                        testID="input"
-                        mode="outlined"
-                        value={bitaEvents.bitacora_id}
-                      />
-                    )}
-                  />
-                  {errors.id && <Text>This is required.</Text>}
-                </View>
+                  <Text style={styles.label}>
+                    Bitacora Id:
+                    <Controller
+                      name="bitacora_id"
+                      control={control}
+                      render={({ field: { value } }) => (
+                        <TextInput
+                          keyboardType="numeric"
+                          style={styles.input}
+                          value={String(bitaEvents.bitacora_id)}
+                          disabled={true}
+                        />
+                      )}
+                      defaultValue={String(bitaEvents.bitacora_id)}
+                    />
+                    {errors.id && <Text>This is required.</Text>}
+                  </Text>
 
-                <View style={styles.inputContainerStyle}>
-                  <Controller
-                    name="tipo_event_id"
-                    control={control}
-                    defaultValue={bitaEvents.tipo_event_id}
-                    render={({ field: { value } }) => (
-                      <TextInput
-                        label="TipoEventID"
-                        testID="input"
-                        mode="outlined"
-                        value={bitaEvents.tipo_event_id}
-                      />
-                    )}
-                  />
-                  {errors.id && <Text>This is required.</Text>}
-                </View>
+                  <Text style={styles.label}>
+                    Tipos_event_id:
+                    <Controller
+                      name="tipo_event_id"
+                      control={control}
+                      render={({ field: { value } }) => (
+                        <TextInput
+                          keyboardType="numeric"
+                          style={styles.input}
+                          value={String(bitaEvents.tipo_event_id)}
+                          disabled={true}
+                        />
+                      )}
+                      defaultValue={String(bitaEvents.tipo_event_id)}
+                    />
+                    {errors.id && <Text>This is required.</Text>}
+                  </Text>
 
-                <View style={styles.inputContainerStyle}>
-                  <Controller
-                    name="events_id"
-                    control={control}
-                    defaultValue={bitaEvents.events_id}
-                    render={({ field: { value } }) => (
-                      <TextInput
-                        label="EventsID"
-                        testID="input"
-                        mode="outlined"
-                        value={bitaEvents.events_id}
-                      />
-                    )}
-                  />
-                  {errors.id && <Text>This is required.</Text>}
-                </View>
+                  <Text style={styles.label}>
+                    Events_id:
+                    <Controller
+                      name="events_id"
+                      control={control}
+                      render={({ field: { value } }) => (
+                        <TextInput
+                          keyboardType="numeric"
+                          style={styles.input}
+                          value={String(bitaEvents.events_id)}
+                          disabled={true}
+                        />
+                      )}
+                      defaultValue={String(bitaEvents.events_id)}
+                    />
+                    {errors.id && <Text>This is required.</Text>}
+                  </Text>
 
-                <View style={styles.inputContainerStyle}>
+                  <Text style={styles.label}>Description:</Text>
                   <Controller
                     name="description"
                     control={control}
@@ -271,9 +276,6 @@ export default function ModalEvent(propss: Props) {
                     defaultValue={bitaEvents.description}
                     render={({ field: { onChange, onBlur, value, ref } }) => (
                       <TextInput
-                        label="Description"
-                        testID="input"
-                        mode="outlined"
                         multiline
                         numberOfLines={4}
                         onBlur={onBlur}
@@ -283,23 +285,24 @@ export default function ModalEvent(propss: Props) {
                       />
                     )}
                   />
-                </View>
 
-                <View style={styles.inputContainerStyle}>
-                  <Controller
-                    name="event_date"
-                    control={control}
-                    defaultValue={String(bitaEvents.event_date)}
-                    render={({ field: { value } }) => (
-                      <TextInput
-                        label="Event Date"
-                        testID="input"
-                        mode="outlined"
-                        value={String(bitaEvents.event_date)}
-                      />
-                    )}
-                  />
-                  {errors.id && <Text>This is required.</Text>}
+                  <Text style={styles.label}>
+                    Fecha:
+                    <Controller
+                      name="event_date"
+                      control={control}
+                      render={({ field: { value } }) => (
+                        <TextInput
+                          keyboardType="numeric"
+                          style={styles.input}
+                          value={String(bitaEvents.event_date)}
+                          disabled={true}
+                        />
+                      )}
+                      defaultValue={String(bitaEvents.event_date)}
+                    />
+                    {errors.id && <Text>This is required.</Text>}
+                  </Text>
                 </View>
 
                 <View style={styles.topRow}>
@@ -336,6 +339,23 @@ export default function ModalEvent(propss: Props) {
     </Surface>
   );
 }
+const styless = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    marginTop: 1,
+    marginBottom: 1,
+    marginRight: 10,
+    marginLeft: 10,
+  },
+  p: {
+    fontSize: 18,
+  },
+  a: {
+    fontWeight: "300",
+    color: "#0c55ae", // make links coloured pink
+  },
+});
 
 const styles = StyleSheet.create({
   a: {
@@ -403,13 +423,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   input: {
+    backgroundColor: "#f0f6fa",
     borderRadius: 4,
     fontSize: 16,
     height: 18,
-    padding: 6,
-    marginTop: 10,
-    marginBottom: 10,
-    color: "rgba(0, 0, 0,0)",
+    padding: 5,
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 1,
+    marginBottom: 1,
   },
   inputMulti: {
     backgroundColor: "#f0f6fa",
@@ -418,26 +440,5 @@ const styles = StyleSheet.create({
     padding: 5,
     marginLeft: 3,
     marginRight: 3,
-  },
-  inputContainerStyle: {
-    margin: 8,
-  },
-});
-
-const styless = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    marginTop: 1,
-    marginBottom: 1,
-    marginRight: 10,
-    marginLeft: 10,
-  },
-  p: {
-    fontSize: 18,
-  },
-  a: {
-    fontWeight: "300",
-    color: "#0c55ae", // make links coloured pink
   },
 });

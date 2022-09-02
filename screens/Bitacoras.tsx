@@ -11,10 +11,6 @@ import {
   Divider,
   List,
   Appbar,
-  Portal,
-  Dialog,
-  TextInput,
-  Button,
   useTheme,
 } from "react-native-paper";
 import { Text, View } from "../components/Themed";
@@ -93,7 +89,7 @@ export default function Bitacoras<T>() {
   const ENDPOINTE = BASE_URL + "bitacora/events/edit/";
 
   const { status, data, error, isLoading, refetch } = useQuery(
-    "bitacoras",
+    ["bitacoras"],
     async () => {
       const res = await axios.get(`${ENDPOINT}`);
       // console.log("DATA1", res);
@@ -218,7 +214,7 @@ export default function Bitacoras<T>() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#656c71",
+    backgroundColor: "#969b9e",
   },
   a: {
     fontWeight: "bold",

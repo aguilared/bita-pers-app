@@ -36,22 +36,7 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
-          <PaperProvider
-            theme={
-              theme === "light"
-                ? {
-                    ...DefaultTheme,
-                    colors: {
-                      ...DefaultTheme.colors,
-                      primary: "#1ba1f2",
-                    },
-                  }
-                : {
-                    ...DarkTheme,
-                    colors: { ...DarkTheme.colors, primary: "#1ba1f2" },
-                  }
-            }
-          >
+          <PaperProvider theme={theme}>
             <Navigation colorScheme={colorScheme} />
             <StatusBar />
           </PaperProvider>
