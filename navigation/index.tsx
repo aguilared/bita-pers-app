@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   NavigationContainer,
@@ -12,7 +12,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { ColorSchemeName, Pressable, StyleSheet, View } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -29,6 +29,7 @@ import {
   RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
+import { Appbar, Title, useTheme } from "react-native-paper";
 
 export default function Navigation({
   colorScheme,
@@ -82,12 +83,50 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+  const theme = useTheme();
 
   return (
     <BottomTab.Navigator
       initialRouteName="TabOne"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: "#0067b1",
+        tabBarLabelStyle: { fontSize: 16 },
+        tabBarStyle: { backgroundColor: "powderblue" },
+
+        header: ({ route, options, navigation }) => {
+          const title =
+            options.headerTitle !== undefined
+              ? options.headerTitle
+              : options.title !== undefined
+              ? options.title
+              : route.name;
+          console.log("Route", route);
+          return (
+            <Appbar.Header
+              theme={{ colors: { primary: theme.colors.surface } }}
+            >
+              <Appbar.Content
+                title={
+                  title === "Bitacorass" ? (
+                    <MaterialCommunityIcons
+                      style={{ marginRight: 10, marginTop: 20 }}
+                      name="twitter"
+                      size={40}
+                      color={theme.colors.primary}
+                    />
+                  ) : (
+                    <Title style={styles.title}>{title}</Title>
+                  )
+                }
+                titleStyle={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  color: theme.colors.primary,
+                }}
+              />
+            </Appbar.Header>
+          );
+        },
       }}
     >
       <BottomTab.Screen
@@ -95,7 +134,13 @@ function BottomTabNavigator() {
         component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
           title: "Tab One",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome
+              name="microphone"
+              size={25}
+              color={focused ? "black" : Colors[colorScheme].tint}
+            />
+          ),
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Modal")}
@@ -126,7 +171,9 @@ function BottomTabNavigator() {
         component={Bitacoras}
         options={{
           title: "Bitacoras",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="history" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>
@@ -142,3 +189,16 @@ function TabBarIcon(props: {
 }) {
   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
+
+const styles = StyleSheet.create({
+  title: {
+    marginTop: 10,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    backgroundColor: "#0067b1",
+  },
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+});

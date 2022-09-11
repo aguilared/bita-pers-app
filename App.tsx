@@ -6,11 +6,7 @@ import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import { QueryClient, QueryClientProvider } from "react-query";
-import {
-  Provider as PaperProvider,
-  DefaultTheme,
-  DarkTheme,
-} from "react-native-paper";
+import { Provider as PaperProvider, Theme } from "react-native-paper";
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -109,7 +109,7 @@ export default function Bitacoras<T>() {
   const dates: any = new Date();
   const titulo = "Eventos al: " + convertDate(dates);
   const navigation = useNavigation();
-  // console.log("Bitacoras Data", data);
+  console.log("Bitacoras Data", data);
 
   const [visible, setVisible] = React.useState(false);
   const [visible1, setVisible1] = React.useState(false);
@@ -155,10 +155,7 @@ export default function Bitacoras<T>() {
               }}
             >
               <Appbar.Header style={styles.header}>
-                <Appbar.Content
-                  title={`${convertDate(item.event_date)}`}
-                  subtitle={`Id: ${item.id} BitacoraId ${item.bitacora_id}`}
-                />
+                <Appbar.Content title={`Id:${item.id}`} />
                 <Appbar.Action
                   icon="pencil"
                   onPress={() =>
@@ -193,6 +190,11 @@ export default function Bitacoras<T>() {
               </Appbar.Header>
               <Text
                 style={styles.title1}
+              >{`BitacoraId: ${item.bitacora_id}`}</Text>
+              <Text style={styles.title1}>{`Date: ${item.event_date}`}</Text>
+
+              <Text
+                style={styles.title1}
               >{`Tipo Evento: ${item.tipo_event_id} ${item.tipoEvent.description}`}</Text>
               <Text
                 style={styles.title1}
@@ -214,7 +216,7 @@ export default function Bitacoras<T>() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#969b9e",
+    backgroundColor: "#76b6e3",
   },
   a: {
     fontWeight: "bold",
@@ -237,6 +239,16 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   title: {
+    marginTop: 1,
+    marginBottom: 1,
+    paddingVertical: 5,
+    marginLeft: 5,
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    backgroundColor: "#0067b1",
+  },
+  title11: {
     marginTop: 1,
     marginBottom: 1,
     paddingVertical: 5,
