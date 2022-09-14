@@ -89,9 +89,11 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="TabOne"
       screenOptions={{
-        tabBarActiveTintColor: "#0067b1",
-        tabBarLabelStyle: { fontSize: 16 },
-        tabBarStyle: { backgroundColor: "powderblue" },
+        headerShown: true,
+        tabBarShowLabel: false,
+        tabBarStyle: { backgroundColor: "#E04473" },
+        tabBarInactiveTintColor: "#fff",
+        tabBarActiveTintColor: "yellow",
 
         header: ({ route, options, navigation }) => {
           const title =
@@ -104,6 +106,7 @@ function BottomTabNavigator() {
           return (
             <Appbar.Header
               theme={{ colors: { primary: theme.colors.surface } }}
+              style={styles.title}
             >
               <Appbar.Content
                 title={
@@ -115,7 +118,7 @@ function BottomTabNavigator() {
                       color={theme.colors.primary}
                     />
                   ) : (
-                    <Title style={styles.title}>{title}</Title>
+                    <Title style={styles.title1}>{title}</Title>
                   )
                 }
                 titleStyle={{
@@ -195,6 +198,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     color: "#FFFFFF",
+    borderRadius: 3,
+    backgroundColor: "#0067b1",
+  },
+  title1: {
+    marginTop: 10,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    borderRadius: 3,
     backgroundColor: "#0067b1",
   },
   container: {

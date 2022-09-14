@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   ScrollView,
   Keyboard,
+  Platform,
 } from "react-native";
 import {
   Subheading,
@@ -191,7 +192,9 @@ export default function Bitacoras<T>() {
               <Text
                 style={styles.title1}
               >{`BitacoraId: ${item.bitacora_id}`}</Text>
-              <Text style={styles.title1}>{`Date: ${item.event_date}`}</Text>
+              <Text style={styles.title1}>{`Date: ${convertDate(
+                item.event_date
+              )}`}</Text>
 
               <Text
                 style={styles.title1}
@@ -216,7 +219,8 @@ export default function Bitacoras<T>() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#76b6e3",
+    backgroundColor: "#D5DBDB",
+    borderRadius: 3,
   },
   a: {
     fontWeight: "bold",
@@ -246,7 +250,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     color: "#FFFFFF",
-    backgroundColor: "#0067b1",
+    backgroundColor: "#0F7694",
+    borderRadius: 3,
   },
   title11: {
     marginTop: 1,
@@ -263,6 +268,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
     paddingVertical: 5,
     fontSize: 17,
+    borderRadius: 2,
   },
   title3: {
     marginTop: 1,
