@@ -86,14 +86,16 @@ export default function Bitacoras<T>() {
   const [tipoevent, setTipoevent] = useState("");
   const [description, setDescription] = useState("");
 
-  const ENDPOINT = BASE_URL + "bitacora/events";
+  //const ENDPOINT = BASE_URL + "bitacora/events";
+  const ENDPOINT = "https://bita-personal-api.vercel.app/api/bitacora/events";
   const ENDPOINTE = BASE_URL + "bitacora/events/edit/";
+  console.log("ENDPOINT", ENDPOINT);
 
   const { status, data, error, isLoading, refetch } = useQuery(
     ["bitacoras"],
     async () => {
       const res = await axios.get(`${ENDPOINT}`);
-      // console.log("DATA1", res);
+      console.log("DATA1", res);
       return res.data;
     }
   );
@@ -220,7 +222,10 @@ export default function Bitacoras<T>() {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: "#D5DBDB",
-    borderRadius: 3,
+    borderRadius: 5,
+    height: 30,
+    marginTop: 1,
+    marginBottom: 1,
   },
   a: {
     fontWeight: "bold",

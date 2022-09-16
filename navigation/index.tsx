@@ -87,49 +87,21 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Bitacoras"
       screenOptions={{
+        headerStyle: {
+          borderRadius: 3,
+          backgroundColor: "#0067b1",
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
         headerShown: true,
         tabBarShowLabel: false,
-        tabBarStyle: { backgroundColor: "#E04473" },
+        tabBarStyle: { backgroundColor: "#E04473", borderRadius: 3 },
         tabBarInactiveTintColor: "#fff",
         tabBarActiveTintColor: "yellow",
-
-        header: ({ route, options, navigation }) => {
-          const title =
-            options.headerTitle !== undefined
-              ? options.headerTitle
-              : options.title !== undefined
-              ? options.title
-              : route.name;
-          console.log("Route", route);
-          return (
-            <Appbar.Header
-              theme={{ colors: { primary: theme.colors.surface } }}
-              style={styles.title}
-            >
-              <Appbar.Content
-                title={
-                  title === "Bitacorass" ? (
-                    <MaterialCommunityIcons
-                      style={{ marginRight: 10, marginTop: 20 }}
-                      name="twitter"
-                      size={40}
-                      color={theme.colors.primary}
-                    />
-                  ) : (
-                    <Title style={styles.title1}>{title}</Title>
-                  )
-                }
-                titleStyle={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  color: theme.colors.primary,
-                }}
-              />
-            </Appbar.Header>
-          );
-        },
       }}
     >
       <BottomTab.Screen
@@ -172,12 +144,31 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Bitacoras"
         component={Bitacoras}
-        options={{
+        options={({ navigation }: RootTabScreenProps<"Bitacoras">) => ({
           title: "Bitacoras",
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="history" color={color} />
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome
+              name="history"
+              size={25}
+              color={focused ? "black" : Colors[colorScheme].tint}
+            />
           ),
-        }}
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate("Modal")}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}
+            >
+              <FontAwesome
+                name="plus"
+                size={25}
+                color={"white"}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
+        })}
       />
     </BottomTab.Navigator>
   );

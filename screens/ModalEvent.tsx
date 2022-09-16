@@ -104,6 +104,7 @@ export default function ModalEvent(propss: Props) {
   }, [setVisible1]);
 
   const onSubmit = async (dataE: any) => {
+    console.log("DATAE", dataE);
     try {
       const dataEE = {
         id: Number(dataE.id),
@@ -113,9 +114,10 @@ export default function ModalEvent(propss: Props) {
         description: dataE.description,
         event_date: new Date(dataE.event_date),
       };
-      //await editBitacora(data);
+      // https://bita-personal-api.vercel.app/api/
+      //await editBitacora(data);  http://192.168.1.99:3000/api/  "http://localhost:3000/
       const result = await fetch(
-        "http://192.168.0.99:3000/api/bitacora/events/admin/edit",
+        "https://bita-personal-api.vercel.app/api/bitacora/events/admin/edit",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -198,6 +200,7 @@ export default function ModalEvent(propss: Props) {
                   <Controller
                     name="id"
                     control={control}
+                    defaultValue={bitaEvents.id}
                     render={({ field: { value } }) => (
                       <TextInput
                         label="ID"

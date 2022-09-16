@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && rm -rf expo/ && yarn install && npx expo start"
   },
   "jest": {
     "preset": "jest-expo"
