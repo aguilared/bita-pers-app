@@ -12,7 +12,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable, StyleSheet, View } from "react-native";
+import { ColorSchemeName, Pressable, StyleSheet } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -22,6 +22,9 @@ import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import Bitacoras from "../screens/Bitacoras";
 import ModalEvent from "../screens/ModalEvent";
+import ModalBitacora from "../screens/ModalBitacora";
+import ModalBitaEventsAdd from "../screens/ModalBitaEventsAdd";
+
 
 import {
   RootStackParamList,
@@ -29,7 +32,7 @@ import {
   RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
-import { Appbar, Title, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 
 export default function Navigation({
   colorScheme,
@@ -70,6 +73,12 @@ function RootNavigator() {
       </Stack.Group>
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="ModalEvent" component={ModalEvent} />
+      </Stack.Group>
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="ModalBitacora" component={ModalBitacora} />
+      </Stack.Group>
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="ModalBitaEventsAdd" component={ModalBitaEventsAdd} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -155,7 +164,7 @@ function BottomTabNavigator() {
           ),
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate("Modal")}
+              onPress={() => navigation.navigate("ModalBitacora")}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}

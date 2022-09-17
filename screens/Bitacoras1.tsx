@@ -175,19 +175,19 @@ export default function Bitacoras<T>() {
                 />
                 <Appbar.Action icon="delete" onPress={() => alert("Search")} />
                 <Appbar.Action
-                  icon="plus"
-                  onPress={() =>
-                    navigation.navigate("ModalBitaEventsAdd", {
-                      id: item.id,
-                      bitacora_id: item.bitacora_id,
-                      event_date: item.event_date,
-                      tipo_event_id: item.tipo_event_id,
-                      events_id: item.events_id,
-                      event: item.event.description,
-                      tipoevent: item.tipoEvent.description,
-                      description: item.description,
-                    })
-                  }
+                  icon="menu"
+                  onPress={() => {
+                    Keyboard.dismiss();
+                    setId(item.id);
+                    setBitacora_id(item.bitacora_id);
+                    setTipo_event_id(item.tipo_event_id);
+                    setEvents_id(item.events_id);
+                    setEvent_date(item.event_date);
+                    setEvent(item.event);
+                    setTipoevent(item.tipoevent);
+                    setDescription(item.description);
+                    showDialog1();
+                  }}
                 />
               </Appbar.Header>
               <Text

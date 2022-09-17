@@ -30,6 +30,16 @@ export type RootStackParamList = {
     tipoevent: string,
     description: string
   ];
+  ModalBitacora: [author_id: number, bitacora_date: string];
+ModalBitaEventsAdd: [
+    bitacora_id: number,
+    tipo_event_id: number,
+    events_id: number,
+    event_date: string,
+    event: string,
+    tipoevent: string,
+    description: string
+  ];
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -49,6 +59,7 @@ export type RootTabParamList = {
     tipoevent: string,
     description: string
   ];
+  ModalBitacora: [author_id: number, bitacora_date: string];
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
