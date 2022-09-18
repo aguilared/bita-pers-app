@@ -95,7 +95,7 @@ export default function ModalBitacoraAdd(propss: Props) {
       // "https://bita-personal-api.vercel.app/api/bitacora/create",
       // "http://192.168.1.99:3000/api/bitacora/create",
       const result = await fetch(
-        "https://bita-personal-api.vercel.app/api/bitacora/create",
+        "http://192.168.1.99:3000/api/bitacora/create",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -103,11 +103,15 @@ export default function ModalBitacoraAdd(propss: Props) {
         }
       );
       console.log("RESULT", result);
+      const data = await result.json();
+      console.log("DATA", data);
       // refetch();
       setVisible1(false);
       setTimeout(() => {
         //navigation.navigation.push('ActivitiesList');
-        navigation.navigate("Bitacoras");
+        navigation.navigate("ModalBitaEventsAdd", {
+          id: data.id,
+        });
       }, 600);
     } catch (error) {
       console.log(error);
