@@ -117,7 +117,7 @@ export default function ModalEvent(propss: Props) {
       // https://bita-personal-api.vercel.app/api/
       //await editBitacora(data);  http://192.168.1.99:3000/api/  "http://localhost:3000/
       const result = await fetch(
-        "https://bita-personal-api.vercel.app/api/bitacora/events/admin/edit",
+        "http://192.168.1.99:3000/api/bitacora/events/admin/edit",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

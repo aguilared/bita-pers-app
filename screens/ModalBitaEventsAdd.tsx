@@ -63,14 +63,19 @@ const queryClient = new QueryClient({
   },
 });
 
-const convertDate = (date: string) => {
-  const d = dayjs(date).format("DD-MM-YYYY HH:MM");
+const convertDate = (dateTo: any) => {
+  const d = dayjs(dateTo).format("YYYY/MM/DD hh:mm");
   return d;
 };
-const convertDate1 = (date: string) => {
-  const d = dayjs(date).format("DD-MM-YYYY HH:MM");
+
+const date1 = new Date();
+console.log("DATE", date1);
+const convertDate1 = (dateTo: any) => {
+  const d = dayjs(dateTo).format("YYYY/MM/DD hh:mm");
   return d;
 };
+const date = convertDate1(date1);
+console.log("DATE", date);
 export default function ModalEvent(propss: Props) {
   const clonedObj = { ...propss.route.params };
   const bitaEvents = { ...clonedObj, ...propss };
@@ -96,8 +101,7 @@ export default function ModalEvent(propss: Props) {
     handleSubmit,
   } = useForm<FormData>();
 
-  const date = new Date();
-  const titulo = "Bitacora Id: " + bitaEvents.id;
+  const titulo = "ADD BitaEvent Bitacora: " + bitaEvents.bitacora_id;
 
   useEffect(() => {
     setVisible1(true);
@@ -107,7 +111,6 @@ export default function ModalEvent(propss: Props) {
     console.log("DATAE", dataE);
     try {
       const dataEE = {
-        id: Number(dataE.id),
         bitacora_id: Number(dataE.bitacora_id),
         tipo_event_id: Number(dataE.tipo_event_id),
         events_id: Number(dataE.events_id),
@@ -117,7 +120,7 @@ export default function ModalEvent(propss: Props) {
       // https://bita-personal-api.vercel.app/api/
       //await editBitacora(data);  http://192.168.1.99:3000/api/  "http://localhost:3000/
       const result = await fetch(
-        "https://bita-personal-api.vercel.app/api/bitacora/events/admin/edit",
+        "http://192.168.1.99:3000/api/bitacora/events/create",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -198,25 +201,6 @@ export default function ModalEvent(propss: Props) {
               <ScrollView>
                 <View style={styles.inputContainerStyle}>
                   <Controller
-                    name="id"
-                    control={control}
-                    defaultValue={bitaEvents.id}
-                    render={({ field: { value } }) => (
-                      <TextInput
-                        label="ID"
-                        testID="input"
-                        mode="outlined"
-                        keyboardType="numeric"
-                        value={String(bitaEvents.id)}
-                        disabled={true}
-                      />
-                    )}
-                  />
-                  {errors.id && <Text>This is required.</Text>}
-                </View>
-
-                <View style={styles.inputContainerStyle}>
-                  <Controller
                     name="bitacora_id"
                     control={control}
                     defaultValue={bitaEvents.bitacora_id}
@@ -238,17 +222,19 @@ export default function ModalEvent(propss: Props) {
                     name="tipo_event_id"
                     control={control}
                     defaultValue={bitaEvents.tipo_event_id}
-                    render={({ field: { value } }) => (
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
                       <TextInput
                         label="TipoEventID"
                         testID="input"
                         mode="outlined"
-                        keyboardType="numeric"
-                        value={String(bitaEvents.tipo_event_id)}
+                        onBlur={onBlur}
+                        value={value}
+                        onChangeText={(value) => onChange(value)}
+                        ref={ref}
                       />
                     )}
                   />
-                  {errors.id && <Text>This is required.</Text>}
+                  {errors.tipo_event_id && <Text>This is required.</Text>}
                 </View>
 
                 <View style={styles.inputContainerStyle}>
@@ -256,17 +242,19 @@ export default function ModalEvent(propss: Props) {
                     name="events_id"
                     control={control}
                     defaultValue={bitaEvents.events_id}
-                    render={({ field: { value } }) => (
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
                       <TextInput
                         label="EventsID"
                         testID="input"
                         mode="outlined"
-                        keyboardType="numeric"
-                        value={String(bitaEvents.events_id)}
+                        onBlur={onBlur}
+                        value={value}
+                        onChangeText={(value) => onChange(value)}
+                        ref={ref}
                       />
                     )}
                   />
-                  {errors.id && <Text>This is required.</Text>}
+                  {errors.events_id && <Text>This is required.</Text>}
                 </View>
 
                 <View style={styles.inputContainerStyle}>
@@ -295,17 +283,17 @@ export default function ModalEvent(propss: Props) {
                   <Controller
                     name="event_date"
                     control={control}
-                    defaultValue={String(bitaEvents.event_date)}
+                    defaultValue={String(date)}
                     render={({ field: { value } }) => (
                       <TextInput
                         label="Event Date"
                         testID="input"
                         mode="outlined"
-                        value={String(bitaEvents.event_date)}
+                        value={String(date)}
                       />
                     )}
                   />
-                  {errors.id && <Text>This is required.</Text>}
+                  {errors.event_date && <Text>This is required.</Text>}
                 </View>
 
                 <View style={styles.topRow}>
@@ -329,7 +317,7 @@ export default function ModalEvent(propss: Props) {
                         mode="contained"
                         onPress={handleSubmit(onSubmit)}
                       >
-                        Modificar
+                        Add BitaEvent
                       </Button>
                     </Subheading>
                   </View>

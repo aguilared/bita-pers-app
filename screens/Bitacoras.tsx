@@ -86,8 +86,8 @@ export default function Bitacoras<T>() {
   const [tipoevent, setTipoevent] = useState("");
   const [description, setDescription] = useState("");
 
-  //const ENDPOINT = "http://192.168.1.99:3000/api/bitacora/events";
-  const ENDPOINT = "https://bita-personal-api.vercel.app/api/bitacora/events";
+  const ENDPOINT = "http://192.168.1.99:3000/api/bitacora/events";
+  //const ENDPOINT = "https://bita-personal-api.vercel.app/api/bitacora/events";
   console.log("ENDPOINT", ENDPOINT);
 
   const { status, data, error, isLoading, refetch } = useQuery(

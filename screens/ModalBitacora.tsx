@@ -110,7 +110,7 @@ export default function ModalBitacoraAdd(propss: Props) {
       setTimeout(() => {
         //navigation.navigation.push('ActivitiesList');
         navigation.navigate("ModalBitaEventsAdd", {
-          id: data.id,
+          bitacora_id: data.id,
         });
       }, 600);
     } catch (error) {
