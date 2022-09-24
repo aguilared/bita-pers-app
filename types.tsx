@@ -31,7 +31,7 @@ export type RootStackParamList = {
     description: string
   ];
   ModalBitacora: [author_id: number, bitacora_date: string];
-ModalBitaEventsAdd: [
+  ModalBitaEventsAdd: [
     bitacora_id: number,
     tipo_event_id: number,
     events_id: number,
@@ -49,6 +49,7 @@ export type RootTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
   Bitacoras: undefined;
+  BitacorasWeb: undefined;
   ModalEvent: [
     id: number,
     bitacora_id: number,

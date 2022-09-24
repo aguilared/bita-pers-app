@@ -23,6 +23,7 @@ import React, { useContext, useEffect } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { BASE_URL } from "@env";
 
 type Props = {
   id: number;
@@ -118,15 +119,17 @@ export default function ModalEvent(propss: Props) {
         event_date: new Date(dataE.event_date),
       };
       // https://bita-personal-api.vercel.app/api/
-      //await editBitacora(data);  http://192.168.1.99:3000/api/  "http://localhost:3000/
-      const result = await fetch(
-        "http://192.168.1.99:3000/api/bitacora/events/create",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(dataEE),
-        }
-      );
+      //  http://192.168.1.99:3000/api/  lenovo
+      //  http://192.168.1.30:3000/api/  pc de la sala
+      // http://localhost:3000/
+      // "http://192.168.1.30:3000/api/bitacora/events/create",
+      const ENDPOINT = BASE_URL + "bitacora/events/create";
+      console.log("ENDPOINT", ENDPOINT);
+      const result = await fetch(ENDPOINT, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dataEE),
+      });
       console.log("result", result);
       // refetch();
       setVisible1(false);
@@ -284,12 +287,13 @@ export default function ModalEvent(propss: Props) {
                     name="event_date"
                     control={control}
                     defaultValue={String(date)}
-                    render={({ field: { value } }) => (
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
                       <TextInput
                         label="Event Date"
                         testID="input"
                         mode="outlined"
-                        value={String(date)}
+                        value={value}
+                        onChangeText={(value) => onChange(value)}
                       />
                     )}
                   />

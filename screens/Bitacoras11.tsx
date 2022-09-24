@@ -32,7 +32,6 @@ import useAppState from "react-native-appstate-hook";
 import { useForm, Controller } from "react-hook-form";
 import overlay from "./overlay";
 import { BASE_URL } from "@env";
-import { FlashList } from "@shopify/flash-list";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -91,7 +90,6 @@ export default function Bitacoras<T>() {
   //const ENDPOINT = "http://192.168.1.99:3000/api/bitacora/events";
   //const ENDPOINT = "https://bita-personal-api.vercel.app/api/bitacora/events";
   const ENDPOINT = BASE_URL + "bitacora/events";
-  console.log("ENDPOINT", ENDPOINT);
 
   const { status, data, error, isLoading, refetch } = useQuery(
     ["bitacoras"],
@@ -143,7 +141,7 @@ export default function Bitacoras<T>() {
       <QueryClientProvider client={queryClient}>
         <Subheading style={styles.title}>{titulo}</Subheading>
         <Divider style={{ backgroundColor: "gray" }} />
-        <FlashList
+        <FlatList
           style={{
             marginBottom: 1,
             marginTop: 1,

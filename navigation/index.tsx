@@ -21,10 +21,10 @@ import NotFoundScreen from "../screens/NotFoundScreen";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import Bitacoras from "../screens/Bitacoras";
+import BitacorasWeb from "../screens/BitacorasWeb";
 import ModalEvent from "../screens/ModalEvent";
 import ModalBitacora from "../screens/ModalBitacora";
 import ModalBitaEventsAdd from "../screens/ModalBitaEventsAdd";
-
 
 import {
   RootStackParamList,
@@ -78,7 +78,10 @@ function RootNavigator() {
         <Stack.Screen name="ModalBitacora" component={ModalBitacora} />
       </Stack.Group>
       <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="ModalBitaEventsAdd" component={ModalBitaEventsAdd} />
+        <Stack.Screen
+          name="ModalBitaEventsAdd"
+          component={ModalBitaEventsAdd}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -158,6 +161,35 @@ function BottomTabNavigator() {
           tabBarIcon: ({ focused }) => (
             <FontAwesome
               name="history"
+              size={25}
+              color={focused ? "black" : Colors[colorScheme].tint}
+            />
+          ),
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate("ModalBitacora")}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}
+            >
+              <FontAwesome
+                name="plus"
+                size={25}
+                color={"white"}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
+        })}
+      />
+      <BottomTab.Screen
+        name="BitacorasWeb"
+        component={BitacorasWeb}
+        options={({ navigation }: RootTabScreenProps<"BitacorasWeb">) => ({
+          title: "BitacorasWeb",
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome
+              name="retweet"
               size={25}
               color={focused ? "black" : Colors[colorScheme].tint}
             />

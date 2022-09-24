@@ -73,7 +73,7 @@ function onAppStateChange(status: AppStateStatus) {
   }
 }
 
-export default function Bitacoras<T>() {
+export default function BitacorasWeb<T>() {
   useAppState({
     onChange: onAppStateChange,
   });
