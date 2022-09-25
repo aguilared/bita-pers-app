@@ -117,7 +117,7 @@ export default function ModalEvent(propss: Props) {
       // https://bita-personal-api.vercel.app/api/
       //await editBitacora(data);  http://192.168.1.99:3000/api/  "http://localhost:3000/
       const result = await fetch(
-        "http://192.168.1.99:3000/api/bitacora/events/admin/edit",
+        "http://192.168.1.30:3000/api/bitacora/events/admin/edit",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -237,36 +237,42 @@ export default function ModalEvent(propss: Props) {
                   <Controller
                     name="tipo_event_id"
                     control={control}
+                    rules={{ required: true }}
                     defaultValue={bitaEvents.tipo_event_id}
-                    render={({ field: { value } }) => (
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
                       <TextInput
                         label="TipoEventID"
                         testID="input"
                         mode="outlined"
                         keyboardType="numeric"
-                        value={String(bitaEvents.tipo_event_id)}
+                        value={String(value)}
+                        onChangeText={(value) => onChange(value)}
+                        ref={ref}
                       />
                     )}
                   />
-                  {errors.id && <Text>This is required.</Text>}
+                  {errors.tipo_event_id && <Text>This is required.</Text>}
                 </View>
 
                 <View style={styles.inputContainerStyle}>
                   <Controller
                     name="events_id"
                     control={control}
+                    rules={{ required: true }}
                     defaultValue={bitaEvents.events_id}
-                    render={({ field: { value } }) => (
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
                       <TextInput
-                        label="EventsID"
+                        label="TipoEventID"
                         testID="input"
                         mode="outlined"
                         keyboardType="numeric"
-                        value={String(bitaEvents.events_id)}
+                        value={String(value)}
+                        onChangeText={(value) => onChange(value)}
+                        ref={ref}
                       />
                     )}
                   />
-                  {errors.id && <Text>This is required.</Text>}
+                  {errors.events_id && <Text>This is required.</Text>}
                 </View>
 
                 <View style={styles.inputContainerStyle}>
@@ -296,12 +302,13 @@ export default function ModalEvent(propss: Props) {
                     name="event_date"
                     control={control}
                     defaultValue={String(bitaEvents.event_date)}
-                    render={({ field: { value } }) => (
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
                       <TextInput
                         label="Event Date"
                         testID="input"
                         mode="outlined"
-                        value={String(bitaEvents.event_date)}
+                        value={value}
+                        onChangeText={(value) => onChange(value)}
                       />
                     )}
                   />

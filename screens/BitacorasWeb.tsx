@@ -1,326 +1,112 @@
-import {
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  ScrollView,
-  Keyboard,
-  Platform,
-} from "react-native";
-import {
-  Subheading,
-  Surface,
-  Divider,
-  List,
-  Appbar,
-  useTheme,
-} from "react-native-paper";
-import { Text, View } from "../components/Themed";
-import HTMLView from "react-native-htmlview";
-import axios from "axios";
-import dayjs from "dayjs";
-import React, { useState, useRef, useCallback } from "react";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import {
-  onlineManager,
-  focusManager,
-  useQuery,
-  QueryClient,
-  QueryClientProvider,
-} from "react-query";
-import NetInfo from "@react-native-community/netinfo";
-import useAppState from "react-native-appstate-hook";
-import { useForm, Controller } from "react-hook-form";
-import overlay from "./overlay";
-import { BASE_URL } from "@env";
-import { FlashList } from "@shopify/flash-list";
+import React, { useState } from "react";
+import { Text, View } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
+import { StyleSheet, scale } from "react-native-size-scaling";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useTypeEvents1 } from "../hooks/useTypeEvents1";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      retry: true,
-      staleTime: 10000,
-    },
-  },
-});
+const data = [
+  { label: "Item 1", value: "1" },
+  { label: "Item 2", value: "2" },
+  { label: "Item 3", value: "3" },
+  { label: "Item 4", value: "4" },
+  { label: "Item 5", value: "5" },
+  { label: "Item 6", value: "6" },
+  { label: "Item 7", value: "7" },
+  { label: "Item 8", value: "8" },
+];
 
-const convertDate = (date: string) => {
-  const d = dayjs(date).format("DD-MM-YYYY HH:MM");
-  return d;
-};
+const DropdownComponent = () => {
+  const { typeEvents1 } = useTypeEvents1(); //
+  console.log("TYPEVENTS", typeEvents1);
+  const [value, setValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
 
-type FormData = {
-  id: number;
-  bitacora_id: number;
-  tipo_event_id: number;
-  events_id: number;
-  event_date: string;
-  event: string;
-  tipoevent: string;
-  description: string;
-};
-
-onlineManager.setEventListener((setOnline) => {
-  return NetInfo.addEventListener((state) => {
-    setOnline(state.isConnected);
-  });
-});
-
-function onAppStateChange(status: AppStateStatus) {
-  if (Platform.OS !== "web") {
-    focusManager.setFocused(status === "active");
-  }
-}
-
-export default function BitacorasWeb<T>() {
-  useAppState({
-    onChange: onAppStateChange,
-  });
-
-  const [id, setId] = useState("");
-  const [bitacora_id, setBitacora_id] = useState("");
-  const [tipo_event_id, setTipo_event_id] = useState("");
-  const [events_id, setEvents_id] = useState("");
-  const [event_date, setEvent_date] = useState("");
-  const [event, setEvent] = useState("");
-  const [tipoevent, setTipoevent] = useState("");
-  const [description, setDescription] = useState("");
-
-  //const ENDPOINT = "http://192.168.1.30:3000/api/bitacora/events";
-  //const ENDPOINT = "http://192.168.1.99:3000/api/bitacora/events";
-  //const ENDPOINT = "https://bita-personal-api.vercel.app/api/bitacora/events";
-  const ENDPOINT = BASE_URL + "bitacora/events";
-  console.log("ENDPOINT", ENDPOINT);
-
-  const { status, data, error, isLoading, refetch } = useQuery(
-    ["bitacoras"],
-    async () => {
-      const res = await axios.get(`${ENDPOINT}`);
-      console.log("DATA1", res);
-      return res.data;
+  const renderLabel = () => {
+    if (value || isFocus) {
+      return (
+        <Text style={[styles.label, isFocus && { color: "blue" }]}>
+          Dropdown Tipo Evento
+        </Text>
+      );
     }
-  );
-  const enabledRef = useRef(false);
-  useFocusEffect(
-    useCallback(() => {
-      if (enabledRef.current) {
-        refetch();
-      } else {
-        enabledRef.current = true;
-      }
-    }, [refetch])
-  );
-  const dates: any = new Date();
-  const titulo = "Eventos al: " + convertDate(dates);
-  const navigation = useNavigation();
-  console.log("Bitacoras Data", data);
-
-  const [visible, setVisible] = React.useState(false);
-  const [visible1, setVisible1] = React.useState(false);
-
-  const showDialog = () => setVisible(true);
-  const showDialog1 = () => setVisible1(true);
-
-  const hideDialog = () => setVisible(false);
-  const hideDialog1 = () => setVisible1(false);
-  const theme = useTheme();
-  const backgroundColor = overlay(1, theme.colors.surface) as string;
-
-  const {
-    control,
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<FormData>();
-
-  if (isLoading) {
-    return <ActivityIndicator size="large" color="#e91e63" />;
-  }
+    return null;
+  };
 
   return (
-    <Surface style={styles.container}>
-      <QueryClientProvider client={queryClient}>
-        <Subheading style={styles.title}>{titulo}</Subheading>
-        <Divider style={{ backgroundColor: "gray" }} />
-        <FlashList
-          style={{
-            marginBottom: 1,
-            marginTop: 1,
-            marginLeft: 1,
-          }}
-          data={data}
-          renderItem={({ item }) => (
-            <List.Section
-              style={{
-                marginTop: 1,
-                marginBottom: 1,
-                marginLeft: 10,
-                marginRight: 5,
-              }}
-            >
-              <Appbar.Header style={styles.header}>
-                <Appbar.Content title={`Id:${item.id}`} />
-                <Appbar.Action
-                  icon="pencil"
-                  onPress={() =>
-                    navigation.navigate("ModalEvent", {
-                      id: item.id,
-                      bitacora_id: item.bitacora_id,
-                      event_date: item.event_date,
-                      tipo_event_id: item.tipo_event_id,
-                      events_id: item.events_id,
-                      event: item.event.description,
-                      tipoevent: item.tipoEvent.description,
-                      description: item.description,
-                    })
-                  }
-                />
-                <Appbar.Action icon="delete" onPress={() => alert("Search")} />
-                <Appbar.Action
-                  icon="plus"
-                  onPress={() =>
-                    navigation.navigate("ModalBitaEventsAdd", {
-                      id: item.id,
-                      bitacora_id: item.bitacora_id,
-                      event_date: item.event_date,
-                      tipo_event_id: item.tipo_event_id,
-                      events_id: item.events_id,
-                      event: item.event.description,
-                      tipoevent: item.tipoEvent.description,
-                      description: item.description,
-                    })
-                  }
-                />
-              </Appbar.Header>
-              <Text
-                style={styles.title1}
-              >{`BitacoraId: ${item.bitacora_id}`}</Text>
-              <Text style={styles.title1}>{`Date: ${convertDate(
-                item.event_date
-              )}`}</Text>
-
-              <Text
-                style={styles.title1}
-              >{`Tipo Evento: ${item.tipo_event_id} ${item.tipoEvent.description}`}</Text>
-              <Text
-                style={styles.title1}
-              >{`Evento: ${item.events_id} ${item.event.description}`}</Text>
-              <HTMLView
-                value={`Description: ${item.description}`}
-                stylesheet={styles}
-              />
-
-              <Divider style={{ backgroundColor: "gray" }} />
-            </List.Section>
-          )}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      </QueryClientProvider>
-    </Surface>
+    <View style={styles.container}>
+      {renderLabel()}
+      <Dropdown
+        style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        data={typeEvents1}
+        search
+        maxHeight={scale(200)}
+        labelField="label"
+        valueField="value"
+        placeholder={!isFocus ? "Select item" : "..."}
+        searchPlaceholder="Seleccione..."
+        value={value}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={(item) => {
+          setValue(item.value);
+          setIsFocus(false);
+        }}
+        renderLeftIcon={() => (
+          <FontAwesome
+            style={styles.icon}
+            color={isFocus ? "blue" : "black"}
+            name="link"
+            size={scale(20)}
+          />
+        )}
+      />
+    </View>
   );
-}
+};
+
+export default DropdownComponent;
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: "#D5DBDB",
-    borderRadius: 5,
-    height: 30,
-    marginTop: 1,
-    marginBottom: 1,
-  },
-  a: {
-    fontWeight: "bold",
-    color: "purple",
-  },
-  div: {
-    fontFamily: "monospace",
-    marginTop: 1,
-    marginBottom: 1,
-  },
-  p: {
-    fontSize: 18,
-  },
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    marginTop: 1,
-    marginBottom: 1,
-    marginRight: 10,
-    marginLeft: 10,
+    backgroundColor: "white",
+    paddingTop: 16,
   },
-  title: {
-    marginTop: 1,
-    marginBottom: 1,
-    paddingVertical: 5,
-    marginLeft: 5,
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#FFFFFF",
-    backgroundColor: "#0F7694",
-    borderRadius: 3,
+  dropdown: {
+    height: 50,
+    borderColor: "gray",
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
   },
-  title11: {
-    marginTop: 1,
-    marginBottom: 1,
-    paddingVertical: 5,
-    marginLeft: 5,
-    fontSize: 19,
-    fontWeight: "bold",
-  },
-  title1: {
-    marginTop: 1,
-    marginBottom: 1,
-    marginLeft: 10,
+  icon: {
     marginRight: 5,
-    paddingVertical: 5,
-    fontSize: 17,
-    borderRadius: 2,
-  },
-  title3: {
-    marginTop: 1,
-    marginBottom: 1,
-    marginLeft: 10,
-    marginRight: 5,
-    paddingVertical: 5,
-    fontSize: 17,
-    color: "blue",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
   },
   label: {
-    paddingVertical: 5,
-    marginLeft: 3,
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "gray",
-  },
-  topRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
-    marginTop: 10,
-  },
-  input: {
-    backgroundColor: "#f0f6fa",
-    borderRadius: 4,
-    fontSize: 16,
-    height: 18,
-    padding: 5,
-    marginLeft: 3,
-    marginRight: 3,
-    marginTop: 1,
-    marginBottom: 1,
-  },
-  inputMulti: {
-    backgroundColor: "#f0f6fa",
-    borderRadius: 4,
+    position: "absolute",
+    backgroundColor: "white",
+    left: 16,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
     fontSize: 14,
-    padding: 5,
-    marginLeft: 3,
-    marginRight: 3,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });

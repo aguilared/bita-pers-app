@@ -7222,6 +7222,11 @@ react-native-dotenv@^3.3.1:
   dependencies:
     dotenv "^10.0.0"
 
+react-native-element-dropdown@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-element-dropdown/-/react-native-element-dropdown-2.3.0.tgz#1d0d09778207f073b39216bb2ea10452648a8616"
+  integrity sha512-HzuR1+PVS3YJD835ZAmJ7gNzkIvYJady8EwJS0Nnu6NoEeLXyJTvrD2G+dkeBmckZ+FuGjUKeYqhs508gok83w==
+
 react-native-gradle-plugin@^0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.0.7.tgz#96602f909745239deab7b589443f14fce5da2056"
@@ -7274,6 +7279,11 @@ react-native-screens@~3.15.0:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
+
+react-native-size-scaling@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-size-scaling/-/react-native-size-scaling-0.5.1.tgz#a1a7f91905e11fc6bba0a5178dc308aca7a76ec8"
+  integrity sha512-OVRox11fjpwUR7DQIPH/4RAhwkqm/r7lKYl5w0dEogFZ3Rz9CK7Bua7oaPLmVP2QnWP0rc0bpgkMc/Rl8ik1yw==
 
 react-native-web@~0.18.7:
   version "0.18.7"

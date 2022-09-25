@@ -5,7 +5,6 @@ import {
   ScrollView,
   Keyboard,
   Platform,
-  Image,
 } from "react-native";
 import {
   Subheading,
@@ -32,7 +31,7 @@ import NetInfo from "@react-native-community/netinfo";
 import useAppState from "react-native-appstate-hook";
 import { useForm, Controller } from "react-hook-form";
 import overlay from "./overlay";
-import { BASE_URL, BASE_URL_IMAGES } from "@env";
+import { BASE_URL } from "@env";
 import { FlashList } from "@shopify/flash-list";
 
 const queryClient = new QueryClient({
@@ -74,7 +73,7 @@ function onAppStateChange(status: AppStateStatus) {
   }
 }
 
-export default function Bitacoras<T>() {
+export default function BitacorasWeb<T>() {
   useAppState({
     onChange: onAppStateChange,
   });
@@ -212,16 +211,6 @@ export default function Bitacoras<T>() {
                 stylesheet={styles}
               />
 
-              <Image
-                source={{ uri: BASE_URL_IMAGES + `${item.id}` + ".jpg" }}
-                style={[
-                  styles.image,
-                  {
-                    borderColor: "gray",
-                  },
-                ]}
-              />
-
               <Divider style={{ backgroundColor: "gray" }} />
             </List.Section>
           )}
@@ -333,12 +322,5 @@ const styles = StyleSheet.create({
     padding: 5,
     marginLeft: 3,
     marginRight: 3,
-  },
-  image: {
-    borderWidth: StyleSheet.hairlineWidth,
-    marginTop: 10,
-    borderRadius: 20,
-    width: "100%",
-    height: 240,
   },
 });
