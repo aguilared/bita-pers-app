@@ -1,5 +1,4 @@
-import { ScrollView, Keyboard } from "react-native";
-import { StyleSheet, scale } from "react-native-size-scaling";
+import { StyleSheet, ScrollView, Keyboard } from "react-native";
 
 import {
   Divider,
@@ -18,15 +17,14 @@ import { useForm, Controller } from "react-hook-form";
 
 import HTMLView from "react-native-htmlview";
 
+import axios from "axios";
 import dayjs from "dayjs";
 import React, { useContext, useEffect, useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
-import { Dropdown } from "react-native-element-dropdown";
-import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useTypeEvents1 } from "../hooks/useTypeEvents1";
-import { useEventsId } from "../hooks/useEventsId";
-
+import { QueryClient, QueryClientProvider } from "react-query";
+import DropdownTipoEvent from "../components/DropDownTipoEvento";
+import DropdownEventsId from "../components/DropDownEventsId";
 type Props = {
   id: number;
   bitacora_id: number;
@@ -55,6 +53,17 @@ interface IFormInputs {
   numberInput: string;
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: true,
+      staleTime: 10000,
+    },
+  },
+});
+
 const convertDate = (date: string) => {
   const d = dayjs(date).format("DD-MM-YYYY HH:MM");
   return d;
@@ -63,12 +72,11 @@ const convertDate1 = (date: string) => {
   const d = dayjs(date).format("DD-MM-YYYY HH:MM");
   return d;
 };
-
 export default function ModalEvent(propss: Props) {
   const clonedObj = { ...propss.route.params };
   const bitaEvents = { ...clonedObj, ...propss };
   const navigation = useNavigation();
-  console.log("bitaEvents", bitaEvents);
+  //console.log("bitaEvents", bitaEvents);
   const theme = useTheme();
   const backgroundColor = overlay(1, theme.colors.surface) as string;
 
@@ -82,26 +90,6 @@ export default function ModalEvent(propss: Props) {
   const hideDialog1 = () => setVisible1(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const { typeEvents1 } = useTypeEvents1(); //
-  console.log("TYPEVENTS", typeEvents1);
-  const [value, setValue] = useState(null);
-  const [isFocus, setIsFocus] = useState(false);
-
-  const [eventId, setEventId] = useState("");
-  const { eventsId } = useEventsId(eventId);
-  //const { eventsId } = useEventsId(33); //
-  console.log("EVENTSOFTYPPE", eventsId);
-
-  const renderLabel = () => {
-    if (value || isFocus) {
-      return (
-        <Text style={[styles.label, isFocus && { color: "blue" }]}>
-          Tipo Evento
-        </Text>
-      );
-    }
-    return null;
-  };
   const {
     control,
     register,
@@ -111,6 +99,8 @@ export default function ModalEvent(propss: Props) {
 
   const date = new Date();
   const titulo = "Evento Id: " + bitaEvents.id;
+  const [eventId, setEventId] = useState(33);
+  const { eventsId } = DropdownEventsId(eventId); //
   useEffect(() => {
     setVisible1(true);
   }, [setVisible1]);
@@ -129,7 +119,7 @@ export default function ModalEvent(propss: Props) {
       // https://bita-personal-api.vercel.app/api/
       //await editBitacora(data);  http://192.168.1.99:3000/api/  "http://localhost:3000/
       const result = await fetch(
-        "http://192.168.1.99:3000/api/bitacora/events/admin/edit",
+        "http://192.168.1.30:3000/api/bitacora/events/admin/edit",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -242,101 +232,76 @@ export default function ModalEvent(propss: Props) {
                       />
                     )}
                   />
-                  {errors.bitacora_id && <Text>This is required.</Text>}
+                  {errors.id && <Text>This is required.</Text>}
                 </View>
 
                 <View style={styles.inputContainerStyle}>
-                  {renderLabel()}
                   <Controller
                     name="tipo_event_id"
                     control={control}
                     rules={{ required: true }}
                     defaultValue={bitaEvents.tipo_event_id}
                     render={({ field: { onChange, onBlur, value, ref } }) => (
-                      <Dropdown
-                        style={[
-                          stylesss.dropdown,
-                          isFocus && { borderColor: "blue" },
-                        ]}
-                        placeholderStyle={stylesss.placeholderStyle}
-                        selectedTextStyle={stylesss.selectedTextStyle}
-                        inputSearchStyle={stylesss.inputSearchStyle}
-                        iconStyle={stylesss.iconStyle}
-                        data={typeEvents1}
-                        search
-                        maxHeight={scale(200)}
-                        labelField="label"
-                        valueField="value"
-                        placeholder={!isFocus ? "Select Type Event" : "..."}
-                        searchPlaceholder="Seleccione..."
-                        value={value}
-                        onFocus={() => setIsFocus(true)}
-                        onBlur={() => setIsFocus(false)}
-                        onChange={(item) => {
-                          setValue(item.value);
-                          setIsFocus(false);
-                          setEventId(item.value);
-                        }}
+                      <TextInput
+                        label="TipoEventID"
+                        testID="input"
+                        mode="outlined"
+                        keyboardType="numeric"
+                        value={String(value)}
+                        onChangeText={(value) => onChange(value)}
                         ref={ref}
-                        renderLeftIcon={() => (
-                          <FontAwesome
-                            style={stylesss.icon}
-                            color={isFocus ? "blue" : "black"}
-                            name="link"
-                            size={scale(20)}
-                          />
-                        )}
                       />
                     )}
                   />
                   {errors.tipo_event_id && <Text>This is required.</Text>}
                 </View>
+                <View style={styles.inputContainerStyle}>
+                  <Controller
+                    name="tipo_event_id"
+                    control={control}
+                    rules={{ required: true }}
+                    defaultValue={bitaEvents.tipo_event_id}
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                      <DropdownTipoEvent />
+                    )}
+                  />
+                  {errors.tipo_event_id && <Text>This is required.</Text>}
+                </View>
 
-                <View style={stylesss.container}>
+                <View style={styles.inputContainerStyle}>
                   <Controller
                     name="events_id"
                     control={control}
                     rules={{ required: true }}
                     defaultValue={bitaEvents.events_id}
                     render={({ field: { onChange, onBlur, value, ref } }) => (
-                      <Dropdown
-                        style={[
-                          stylesss.dropdown,
-                          isFocus && { borderColor: "blue" },
-                        ]}
-                        placeholderStyle={stylesss.placeholderStyle}
-                        selectedTextStyle={stylesss.selectedTextStyle}
-                        inputSearchStyle={stylesss.inputSearchStyle}
-                        iconStyle={stylesss.iconStyle}
-                        data={eventsId}
-                        search
-                        maxHeight={scale(200)}
-                        labelField="label"
-                        valueField="value"
-                        placeholder={!isFocus ? "Select Events" : "..."}
-                        searchPlaceholder="Seleccione..."
-                        value={value}
-                        onFocus={() => setIsFocus(true)}
-                        onBlur={() => setIsFocus(false)}
-                        onChange={(value) => {
-                          bitaEvents.events_id(value);
-                        }}
+                      <TextInput
+                        label="TipoEventID"
+                        testID="input"
+                        mode="outlined"
+                        keyboardType="numeric"
+                        value={String(value)}
+                        onChangeText={(value) => onChange(value)}
                         ref={ref}
-                        renderLeftIcon={() => (
-                          <FontAwesome
-                            style={stylesss.icon}
-                            color={isFocus ? "blue" : "black"}
-                            name="link"
-                            size={scale(20)}
-                          />
-                        )}
                       />
                     )}
                   />
                   {errors.events_id && <Text>This is required.</Text>}
                 </View>
+                <View style={styles.inputContainerStyle}>
+                  <Controller
+                    name="events_id"
+                    control={control}
+                    rules={{ required: true }}
+                    defaultValue={bitaEvents.events_id}
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                      <DropdownEventsId />
+                    )}
+                  />
+                  {errors.events_id && <Text>This is required.</Text>}
+                </View>
 
-                <View style={stylesss.inputContainerStyle}>
+                <View style={styles.inputContainerStyle}>
                   <Controller
                     name="description"
                     control={control}
@@ -513,45 +478,5 @@ const styless = StyleSheet.create({
   a: {
     fontWeight: "300",
     color: "#0c55ae", // make links coloured pink
-  },
-});
-
-const stylesss = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
-    paddingTop: 16,
-  },
-  dropdown: {
-    height: 50,
-    borderColor: "gray",
-    borderWidth: 0.5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-  },
-  icon: {
-    marginRight: 5,
-  },
-  label: {
-    position: "absolute",
-    backgroundColor: "white",
-    left: 16,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
   },
 });

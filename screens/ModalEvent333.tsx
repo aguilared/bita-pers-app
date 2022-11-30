@@ -18,14 +18,18 @@ import { useForm, Controller } from "react-hook-form";
 
 import HTMLView from "react-native-htmlview";
 
+import axios from "axios";
 import dayjs from "dayjs";
 import React, { useContext, useEffect, useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
+import { QueryClient, QueryClientProvider } from "react-query";
+import DropdownTipoEvent from "../components/DropDownTipoEvento";
+import DropdownEventsId from "../components/DropDownEventsId";
 import { Dropdown } from "react-native-element-dropdown";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useTypeEvents1 } from "../hooks/useTypeEvents1";
 import { useEventsId } from "../hooks/useEventsId";
+import { useTypeEvents1 } from "../hooks/useTypeEvents1";
 
 type Props = {
   id: number;
@@ -55,6 +59,17 @@ interface IFormInputs {
   numberInput: string;
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: true,
+      staleTime: 10000,
+    },
+  },
+});
+
 const convertDate = (date: string) => {
   const d = dayjs(date).format("DD-MM-YYYY HH:MM");
   return d;
@@ -63,12 +78,11 @@ const convertDate1 = (date: string) => {
   const d = dayjs(date).format("DD-MM-YYYY HH:MM");
   return d;
 };
-
 export default function ModalEvent(propss: Props) {
   const clonedObj = { ...propss.route.params };
   const bitaEvents = { ...clonedObj, ...propss };
   const navigation = useNavigation();
-  console.log("bitaEvents", bitaEvents);
+  //console.log("bitaEvents", bitaEvents);
   const theme = useTheme();
   const backgroundColor = overlay(1, theme.colors.surface) as string;
 
@@ -96,7 +110,7 @@ export default function ModalEvent(propss: Props) {
     if (value || isFocus) {
       return (
         <Text style={[styles.label, isFocus && { color: "blue" }]}>
-          Tipo Evento
+          Dropdown Tipo Evento
         </Text>
       );
     }
@@ -129,7 +143,7 @@ export default function ModalEvent(propss: Props) {
       // https://bita-personal-api.vercel.app/api/
       //await editBitacora(data);  http://192.168.1.99:3000/api/  "http://localhost:3000/
       const result = await fetch(
-        "http://192.168.1.99:3000/api/bitacora/events/admin/edit",
+        "http://192.168.1.30:3000/api/bitacora/events/admin/edit",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -246,46 +260,23 @@ export default function ModalEvent(propss: Props) {
                 </View>
 
                 <View style={styles.inputContainerStyle}>
-                  {renderLabel()}
                   <Controller
                     name="tipo_event_id"
                     control={control}
                     rules={{ required: true }}
                     defaultValue={bitaEvents.tipo_event_id}
                     render={({ field: { onChange, onBlur, value, ref } }) => (
-                      <Dropdown
-                        style={[
-                          stylesss.dropdown,
-                          isFocus && { borderColor: "blue" },
-                        ]}
-                        placeholderStyle={stylesss.placeholderStyle}
-                        selectedTextStyle={stylesss.selectedTextStyle}
-                        inputSearchStyle={stylesss.inputSearchStyle}
-                        iconStyle={stylesss.iconStyle}
-                        data={typeEvents1}
-                        search
-                        maxHeight={scale(200)}
-                        labelField="label"
-                        valueField="value"
-                        placeholder={!isFocus ? "Select Type Event" : "..."}
-                        searchPlaceholder="Seleccione..."
-                        value={value}
-                        onFocus={() => setIsFocus(true)}
-                        onBlur={() => setIsFocus(false)}
-                        onChange={(item) => {
-                          setValue(item.value);
-                          setIsFocus(false);
-                          setEventId(item.value);
+                      <TextInput
+                        label="TipoEventID"
+                        testID="input"
+                        mode="outlined"
+                        keyboardType="numeric"
+                        value={String(value)}
+                        onChangeText={(value) => {
+                          onChange(value);
+                          setEventId(value);
                         }}
                         ref={ref}
-                        renderLeftIcon={() => (
-                          <FontAwesome
-                            style={stylesss.icon}
-                            color={isFocus ? "blue" : "black"}
-                            name="link"
-                            size={scale(20)}
-                          />
-                        )}
                       />
                     )}
                   />
@@ -293,47 +284,97 @@ export default function ModalEvent(propss: Props) {
                 </View>
 
                 <View style={stylesss.container}>
+                  {renderLabel()}
+                  <Dropdown
+                    style={[
+                      stylesss.dropdown,
+                      isFocus && { borderColor: "blue" },
+                    ]}
+                    placeholderStyle={stylesss.placeholderStyle}
+                    selectedTextStyle={stylesss.selectedTextStyle}
+                    inputSearchStyle={stylesss.inputSearchStyle}
+                    iconStyle={stylesss.iconStyle}
+                    data={typeEvents1}
+                    search
+                    maxHeight={scale(200)}
+                    labelField="label"
+                    valueField="value"
+                    placeholder={!isFocus ? "Select Type Event" : "..."}
+                    searchPlaceholder="Seleccione..."
+                    value={value}
+                    onFocus={() => setIsFocus(true)}
+                    onBlur={() => setIsFocus(false)}
+                    onChange={(item) => {
+                      setValue(item.value);
+                      setIsFocus(false);
+                      setEventId(item.value);
+                    }}
+                    renderLeftIcon={() => (
+                      <FontAwesome
+                        style={stylesss.icon}
+                        color={isFocus ? "blue" : "black"}
+                        name="link"
+                        size={scale(20)}
+                      />
+                    )}
+                  />
+                </View>
+
+                <View style={styles.inputContainerStyle}>
                   <Controller
                     name="events_id"
                     control={control}
                     rules={{ required: true }}
                     defaultValue={bitaEvents.events_id}
                     render={({ field: { onChange, onBlur, value, ref } }) => (
-                      <Dropdown
-                        style={[
-                          stylesss.dropdown,
-                          isFocus && { borderColor: "blue" },
-                        ]}
-                        placeholderStyle={stylesss.placeholderStyle}
-                        selectedTextStyle={stylesss.selectedTextStyle}
-                        inputSearchStyle={stylesss.inputSearchStyle}
-                        iconStyle={stylesss.iconStyle}
-                        data={eventsId}
-                        search
-                        maxHeight={scale(200)}
-                        labelField="label"
-                        valueField="value"
-                        placeholder={!isFocus ? "Select Events" : "..."}
-                        searchPlaceholder="Seleccione..."
-                        value={value}
-                        onFocus={() => setIsFocus(true)}
-                        onBlur={() => setIsFocus(false)}
-                        onChange={(value) => {
-                          bitaEvents.events_id(value);
-                        }}
+                      <TextInput
+                        label="TipoEventID"
+                        testID="input"
+                        mode="outlined"
+                        keyboardType="numeric"
+                        value={String(value)}
+                        onChangeText={(value) => onChange(value)}
                         ref={ref}
-                        renderLeftIcon={() => (
-                          <FontAwesome
-                            style={stylesss.icon}
-                            color={isFocus ? "blue" : "black"}
-                            name="link"
-                            size={scale(20)}
-                          />
-                        )}
                       />
                     )}
                   />
                   {errors.events_id && <Text>This is required.</Text>}
+                </View>
+
+                <View style={stylesss.container}>
+                  {renderLabel()}
+                  <Dropdown
+                    style={[
+                      stylesss.dropdown,
+                      isFocus && { borderColor: "blue" },
+                    ]}
+                    placeholderStyle={stylesss.placeholderStyle}
+                    selectedTextStyle={stylesss.selectedTextStyle}
+                    inputSearchStyle={stylesss.inputSearchStyle}
+                    iconStyle={stylesss.iconStyle}
+                    data={eventsId}
+                    search
+                    maxHeight={scale(200)}
+                    labelField="label"
+                    valueField="value"
+                    placeholder={!isFocus ? "Select Events" : "..."}
+                    searchPlaceholder="Seleccione..."
+                    value={value}
+                    onFocus={() => setIsFocus(true)}
+                    onBlur={() => setIsFocus(false)}
+                    onChange={(item) => {
+                      setValue(item.value);
+                      setIsFocus(false);
+                    }}
+                    renderLeftIcon={() => (
+                      <FontAwesome
+                        style={stylesss.icon}
+                        color={isFocus ? "blue" : "black"}
+                        name="link"
+                        size={scale(20)}
+                      />
+                    )}
+                  />
                 </View>
 
                 <View style={stylesss.inputContainerStyle}>

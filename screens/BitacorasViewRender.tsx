@@ -16,7 +16,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import { Text, View } from "../components/Themed";
-import HTMLView from "react-native-htmlview";
+import RenderHtml from "react-native-render-html";
 import axios from "axios";
 import dayjs from "dayjs";
 import React, { useState, useRef, useCallback } from "react";
@@ -32,7 +32,7 @@ import NetInfo from "@react-native-community/netinfo";
 import useAppState from "react-native-appstate-hook";
 import { useForm, Controller } from "react-hook-form";
 import overlay from "./overlay";
-//import { BASE_URL_API, BASE_URL_IMAGES } from "@env";
+import { BASE_URL_API, BASE_URL_IMAGES } from "@env";
 import { FlashList } from "@shopify/flash-list";
 
 const queryClient = new QueryClient({
@@ -88,21 +88,17 @@ export default function Bitacoras<T>() {
   const [tipoevent, setTipoevent] = useState("");
   const [description, setDescription] = useState("");
 
-  //const ENDPOINT = "http://192.168.0.183:3000/api/bitacora/events";
   //const ENDPOINT = "http://192.168.1.30:3000/api/bitacora/events";
-  //const BASE_URL_API = "http://192.168.1.99:3000/api/";
-  //const BASE_URL_IMAGES = "http://192.168.1.102:3000/static/images/";
-  const BASE_URL_IMAGES = "https://bita-personal-api.vercel.app/static/images/";
-  //const ENDPOINT = "https://bita-personaaal-api.vercel.app/api/bitacoras/events";
-  const BASE_URL_API = "https://bita-personal-api.vercel.app/api/";
+  //const ENDPOINT = "http://192.168.1.99:3000/api/bitacora/events";
+  //const ENDPOINT = "https://bita-personal-api.vercel.app/api/bitacora/events";
   const ENDPOINT = BASE_URL_API + "bitacora/events";
-  //console.log("ENDPOINT", ENDPOINT);
+  console.log("ENDPOINT", ENDPOINT);
 
   const { status, data, error, isLoading, refetch } = useQuery(
     ["bitacoras"],
     async () => {
       const res = await axios.get(`${ENDPOINT}`);
-      //console.log("DATA1", res);
+      console.log("DATA1", res);
       return res.data;
     }
   );
@@ -119,7 +115,7 @@ export default function Bitacoras<T>() {
   const dates: any = new Date();
   const titulo = "Eventos al: " + convertDate(dates);
   const navigation = useNavigation();
-  //console.log("Bitacoras Data", data);
+  console.log("Bitacoras Data", data);
 
   const [visible, setVisible] = React.useState(false);
   const [visible1, setVisible1] = React.useState(false);
@@ -213,10 +209,7 @@ export default function Bitacoras<T>() {
               <Text
                 style={styles.title1}
               >{`Evento: ${item.events_id} ${item.event.description}`}</Text>
-              <HTMLView
-                value={`Description: ${item.description}`}
-                stylesheet={styles.p}
-              />
+              <RenderHtml source={{ html: `${item.description}` }} />
 
               <Image
                 source={{ uri: BASE_URL_IMAGES + `${item.id}` + ".jpg" }}

@@ -1,6 +1,6 @@
 import axios from "axios";
-import { BASE_URL } from "@env";
-const apiUrl = BASE_URL + "bitacora/tipoEvents/";
+import { BASE_URL_API } from "@env";
+const apiUrl = BASE_URL_API + "bitacora/tipoEvents/";
 export default async function getTypeEvents() {
   try {
     const resp = await axios.get(apiUrl);
