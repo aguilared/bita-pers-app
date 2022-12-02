@@ -22,12 +22,15 @@ import dayjs from "dayjs";
 import React, { useContext, useEffect, useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
-import { BASE_URL_API } from "@env";
 import { Dropdown } from "react-native-element-dropdown";
 import { scale } from "react-native-size-scaling";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTypeEvents1 } from "../hooks/useTypeEvents1";
 import { useEventsId } from "../hooks/useEventsId";
+import Constants from "expo-constants";
+import { AppConfig } from "../app.config";
+
+const { API_TOKEN, API_URL } = Constants.manifest?.extra as AppConfig;
 
 type Props = {
   id: number;
@@ -136,7 +139,7 @@ export default function ModalEvent(propss: Props) {
       //  http://192.168.1.30:3000/api/  pc de la sala
       // http://localhost:3000/
       // "http://192.168.1.30:3000/api/bitacora/events/create",
-      const ENDPOINT = BASE_URL_API + "bitacora/events/create";
+      const ENDPOINT = API_URL + "bitacora/events/create";
       console.log("ENDPOINT", ENDPOINT);
       const result = await fetch(ENDPOINT, {
         method: "PUT",

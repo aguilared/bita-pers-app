@@ -21,7 +21,9 @@ import dayjs from "dayjs";
 import React, { useContext, useEffect } from "react";
 
 import { useNavigation } from "@react-navigation/native";
-import { BASE_URL_API } from "@env";
+import Constants from "expo-constants";
+import { AppConfig } from "../app.config";
+const { API_TOKEN, API_URL } = Constants.manifest?.extra as AppConfig;
 
 type Props = {
   author_id: number;
@@ -85,7 +87,7 @@ export default function ModalBitacoraAdd(propss: Props) {
   useEffect(() => {
     setVisible1(true);
   }, [setVisible1]);
-  const ENDPOINT = BASE_URL_API + "bitacora/create";
+  const ENDPOINT = API_URL + "bitacora/create";
   console.log("ENDPOINT", ENDPOINT);
 
   const onSubmit = async (dataE: any) => {

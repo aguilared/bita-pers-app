@@ -32,8 +32,10 @@ import NetInfo from "@react-native-community/netinfo";
 import useAppState from "react-native-appstate-hook";
 import { useForm, Controller } from "react-hook-form";
 import overlay from "./overlay";
-//import { BASE_URL_API, BASE_URL_IMAGES } from "@env";
 import { FlashList } from "@shopify/flash-list";
+import Constants from "expo-constants";
+import { AppConfig } from "../app.config";
+const { API_TOKEN, API_URL } = Constants.manifest?.extra as AppConfig;
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -95,7 +97,7 @@ export default function Bitacoras<T>() {
   const BASE_URL_IMAGES = "https://bita-personal-api.vercel.app/static/images/";
   //const ENDPOINT = "https://bita-personaaal-api.vercel.app/api/bitacoras/events";
   const BASE_URL_API = "https://bita-personal-api.vercel.app/api/";
-  const ENDPOINT = BASE_URL_API + "bitacora/events";
+  const ENDPOINT = API_URL + "bitacora/events";
   //console.log("ENDPOINT", ENDPOINT);
 
   const { status, data, error, isLoading, refetch } = useQuery(

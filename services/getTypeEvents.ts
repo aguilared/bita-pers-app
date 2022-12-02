@@ -1,6 +1,10 @@
 import axios from "axios";
-import { BASE_URL_API } from "@env";
-const apiUrl = BASE_URL_API + "bitacora/tipoEvents/";
+import Constants from "expo-constants";
+import { AppConfig } from "../app.config";
+
+const { API_TOKEN, API_URL } = Constants.manifest?.extra as AppConfig;
+const apiUrl = API_URL + "bitacora/tipoEvents/";
+
 export default async function getTypeEvents() {
   try {
     const resp = await axios.get(apiUrl);

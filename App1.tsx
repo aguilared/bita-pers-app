@@ -6,11 +6,7 @@ import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import { QueryClient, QueryClientProvider } from "react-query";
-
-import {
-  MD3LightTheme as DefaultTheme,
-  Provider as PaperProvider,
-} from "react-native-paper";
+import { Provider as PaperProvider, Theme } from "react-native-paper";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,14 +22,10 @@ const queryClient = new QueryClient({
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
-  const theme = {
-    ...DefaultTheme,
-    colors: {
-      ...DefaultTheme.colors,
-      primary: "tomato",
-      secondary: "yellow",
-    },
-  };
+  const [theme, setTheme] = React.useState<"light" | "dark">(
+    colorScheme === "dark" ? "dark" : "light"
+  );
+
   if (!isLoadingComplete) {
     return null;
   } else {

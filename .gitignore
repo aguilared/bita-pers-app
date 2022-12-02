@@ -21,3 +21,5 @@ web-build/
 .env.test.local
 .env.production.local
 
+config.js
+app.config.js

@@ -27,6 +27,10 @@ import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTypeEvents1 } from "../hooks/useTypeEvents1";
 import { useEventsId } from "../hooks/useEventsId";
 
+import Constants from "expo-constants";
+import { AppConfig } from "../app.config";
+const { API_TOKEN, API_URL } = Constants.manifest?.extra as AppConfig;
+
 type Props = {
   id: number;
   bitacora_id: number;
@@ -128,14 +132,12 @@ export default function ModalEvent(propss: Props) {
       };
       // https://bita-personal-api.vercel.app/api/
       //await editBitacora(data);  http://192.168.1.99:3000/api/  "http://localhost:3000/
-      const result = await fetch(
-        "http://192.168.1.99:3000/api/bitacora/events/admin/edit",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(dataEE),
-        }
-      );
+      const ENDPOINT = API_URL + "bitacora/events/admin/edit";
+      const result = await fetch(ENDPOINT, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dataEE),
+      });
       console.log("result", result);
       // refetch();
       setVisible1(false);
