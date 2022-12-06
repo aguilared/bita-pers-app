@@ -151,11 +151,6 @@ export default function Bitacoras<T>() {
         <Subheading style={styles.title}>{titulo}</Subheading>
         <Divider style={{ backgroundColor: "gray", marginTop: 10 }} />
         <FlashList
-          style={{
-            marginBottom: 30,
-            marginTop: 1,
-            marginLeft: 1,
-          }}
           data={data}
           renderItem={({ item }) => (
             <List.Section
@@ -233,6 +228,7 @@ export default function Bitacoras<T>() {
               <Divider style={{ backgroundColor: "gray", marginTop: 30 }} />
             </List.Section>
           )}
+          estimatedItemSize={200}
           keyExtractor={(item, index) => index.toString()}
         />
       </QueryClientProvider>

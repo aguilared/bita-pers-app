@@ -30,8 +30,8 @@ export default function App() {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      primary: "tomato",
-      secondary: "yellow",
+      primary: "#0067b1",
+      secondary: "#FF9933",
     },
   };
   if (!isLoadingComplete) {

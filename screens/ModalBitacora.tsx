@@ -56,7 +56,7 @@ export default function ModalBitacoraAdd(propss: Props) {
   //console.log("bitaEvents", bitaEvents);
   const theme = useTheme();
   const backgroundColor = overlay(1, theme.colors.surface) as string;
-
+  console.log("ColorBackgron", backgroundColor);
   const [visible, setVisible] = React.useState(false);
   const [visible1, setVisible1] = React.useState(false);
 

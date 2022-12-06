@@ -152,6 +152,52 @@ export default function ModalEvent(propss: Props) {
 
   return (
     <Surface style={styles.container}>
+      <ScrollView>
+        <View style={styles.topRow}>
+          <View>
+            <Subheading style={styles.title}>{titulo}</Subheading>
+
+            <Subheading style={styles.label}>
+              <Button
+                dark
+                color="green"
+                icon="file-document-edit-outline"
+                mode="contained"
+                onPress={() => {
+                  Keyboard.dismiss();
+                  showDialog1();
+                }}
+              >
+                Edit
+              </Button>
+              {"  "}
+              <Button
+                dark
+                color="red"
+                icon="delete-alert"
+                background-color="gray"
+                mode="contained"
+                onPress={() => {
+                  Keyboard.dismiss();
+                  showDialog();
+                }}
+              >
+                Delete
+              </Button>
+            </Subheading>
+          </View>
+        </View>
+        <Divider style={{ backgroundColor: "gray" }} />
+        <Subheading style={styles.label}>
+          Fecha: {convertDate(bitaEvents.event_date)}
+        </Subheading>
+        <Subheading style={styles.label}>
+          TipoEvent: {bitaEvents.tipoevent}
+        </Subheading>
+        <Subheading style={styles.label}>Event: {bitaEvents.event}</Subheading>
+        <HTMLView value={bitaEvents.description} stylesheet={styless} />
+        <Divider style={{ backgroundColor: "gray" }} />
+      </ScrollView>
       <View>
         <Portal>
           <Dialog
